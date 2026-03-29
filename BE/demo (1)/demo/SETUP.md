@@ -44,7 +44,7 @@ JWT_SECRET=your-secret-key
 
 **Windows CMD:**
 ```cmd
-set MONGO_URI=mongodb+srv://<username>:<password>@webbantruyen.2amdk17.mongodb.net/...
+set MONGO_URI=mongodb+srv://thuan:123456ccpt@webbantruyen.2amdk17.mongodb.net/...
 set MONGO_DB=comic_store
 set JWT_SECRET=your-secret-key
 ```
