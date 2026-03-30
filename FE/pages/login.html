@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kaleidoscope - Đăng nhập</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body class="auth-shell">
+    <div class="auth-card wide">
+        <div class="auth-header">
+            <div class="auth-brand">
+                <img src="https://placehold.co/52x52/ffffff/9f2425?text=K" alt="Kaleidoscope Logo">
+                <span>Kaleidoscope</span>
+            </div>
+            <a class="auth-link" href="register.html">Tạo tài khoản</a>
+        </div>
+        <h1>CHÀO MỪNG BẠN ĐẾN VỚI Kaleidoscope</h1>
+        <form class="auth-form" id="loginForm">
+            <label>Email hoặc Số điện thoại *</label>
+            <input type="text" name="usernameOrEmail" placeholder="Nhập email hoặc số điện thoại" required>
+
+            <label>Mật khẩu *</label>
+            <input type="password" name="password" placeholder="Nhập mật khẩu" required>
+
+            <button class="auth-btn primary" type="submit">ĐĂNG NHẬP</button>
+        </form>
+        <div class="auth-foot">
+            <span>Chưa có tài khoản?</span>
+            <a href="register.html">Đăng ký</a>
+            <span>|</span>
+            <a href="admin-login.html">Đăng nhập Admin</a>
+        </div>
+    </div>
+    <script src="../js/main.js"></script>
+</body>
+</html>
