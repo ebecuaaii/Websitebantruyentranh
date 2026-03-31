@@ -9,51 +9,25 @@
 
 ## Cấu hình môi trường
 
-Project dùng biến môi trường để bảo mật thông tin kết nối. `application.properties` **không được push lên git**.
+Project đã hỗ trợ đọc cấu hình trực tiếp từ file `.env` qua:
+`spring.config.import=optional:file:.env[.properties]`
 
-### Bước 1: Tạo file `application.properties`
-Tạo file tại `src/main/resources/application.properties` với nội dung sau:
+### Bước 1: Tạo file `.env`
+Copy từ `.env.example`:
 
-```properties
-spring.application.name=comic-store
-
-# MongoDB Atlas
-spring.data.mongodb.uri=${MONGO_URI}
-spring.data.mongodb.database=${MONGO_DB:comic_store}
-
-# Server
-server.port=8080
-
-# JWT
-jwt.secret=${JWT_SECRET:your-secret-key-here-make-it-long-and-secure}
-jwt.expiration=${JWT_EXPIRATION:86400000}
-
-# CORS
-spring.web.cors.allowed-origins=http://localhost:3000
+```bash
+cp .env.example .env
 ```
 
-### Bước 2: Set biến môi trường
-
-**IntelliJ IDEA:**
-`Run > Edit Configurations > Environment variables`, thêm:
-```
+### Bước 2: Điền giá trị thật vào `.env`
+Ví dụ:
+```env
 MONGO_URI=mongodb+srv://<username>:<password>@webbantruyen.2amdk17.mongodb.net/?retryWrites=true&w=majority&appName=webbantruyen
 MONGO_DB=comic_store
+SERVER_PORT=8080
 JWT_SECRET=your-secret-key
-```
-
-**Windows CMD:**
-```cmd
-set MONGO_URI=mongodb+srv://thuan:123456ccpt@webbantruyen.2amdk17.mongodb.net/...
-set MONGO_DB=comic_store
-set JWT_SECRET=your-secret-key
-```
-
-**macOS/Linux:**
-```bash
-export MONGO_URI=mongodb+srv://<username>:<password>@webbantruyen.2amdk17.mongodb.net/...
-export MONGO_DB=comic_store
-export JWT_SECRET=your-secret-key
+JWT_EXPIRATION=86400000
+CORS_ALLOWED_ORIGINS=http://localhost:3000,http://localhost:5500,http://127.0.0.1:5500
 ```
 
 > Liên hệ team lead để lấy `<username>` và `<password>` MongoDB Atlas.
