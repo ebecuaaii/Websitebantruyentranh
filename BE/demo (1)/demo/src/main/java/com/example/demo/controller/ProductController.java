@@ -20,11 +20,6 @@ public class ProductController {
         return BaseResponse.success(productService.getAllProducts());
     }
 
-    @GetMapping("/category/{categoryId}")
-    public BaseResponse<List<ProductResponse>> getByCategory(@PathVariable String categoryId) {
-        return BaseResponse.success(productService.getProductsByCategory(categoryId));
-    }
-
     @GetMapping("/{id}")
     public BaseResponse<ProductResponse> getById(@PathVariable String id) {
         return BaseResponse.success(productService.getProductById(id));
