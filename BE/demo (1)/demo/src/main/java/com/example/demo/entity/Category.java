@@ -6,30 +6,22 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
 
-@Document(collection = "users")
+@Document(collection = "categories")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class User {
+public class Category {
 
     @Id
     private String id;
 
-    private String username;
-    private String email;
-    private String password;
-
-    private String fullName;
-    private String phone;
-    private String avatar;
-
-    private Role role = Role.USER;
-    private boolean enabled = true;
+    private String name;
+    private String icon;
+    private String thumbnailUrl;
+    private int productCount = 0;
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-
-    public enum Role { USER, ADMIN }
 }
