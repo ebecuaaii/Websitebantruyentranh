@@ -1,7 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.dto.response.AboutResponse;
-import com.example.demo.dto.response.NewsApiResponse;
+import com.example.demo.dto.response.BaseResponse;
 import com.example.demo.service.AboutService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,7 +16,7 @@ public class AboutController {
     private final AboutService aboutService;
 
     @GetMapping
-    public NewsApiResponse<AboutResponse> getAbout() {
-        return NewsApiResponse.success(aboutService.getAboutPage());
+    public BaseResponse<AboutResponse> getAbout() {
+        return BaseResponse.success(aboutService.getAboutPage());
     }
 }

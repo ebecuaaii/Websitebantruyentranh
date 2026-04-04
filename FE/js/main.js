@@ -99,6 +99,21 @@ document.addEventListener('DOMContentLoaded', () => {
         return payload;
     };
 
+    const escapeHtml = (value) => {
+        if (value === null || value === undefined) return '';
+        return String(value)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;');
+    };
+
+    const formatMoney = (value) => {
+        const number = Number(value || 0);
+        return `${number.toLocaleString('vi-VN')} đ`;
+    };
+
     // Toggle menu items hoặc active states
     const navLinks = document.querySelectorAll('.nav-btn');
     
@@ -227,6 +242,136 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
     updateHeaderUserLink();
+
+    const isHomePage = (() => {
+        const homePath = window.location.pathname.toLowerCase();
+        return homePath.endsWith('/index.html') || homePath === '/' || homePath === '';
+    })();
+
+    const renderHomeFeaturedProducts = (products) => {
+        const container = document.getElementById('homeFeaturedProducts');
+        if (!container) return;
+
+        if (!Array.isArray(products) || products.length === 0) {
+            container.innerHTML = `
+                <div class="product-card">
+                    <div class="product-info">
+                        <h3 class="product-title">Chưa có sản phẩm để hiển thị</h3>
+                        <p class="product-author">Vui lòng quay lại sau.</p>
+                    </div>
+                </div>
+            `;
+            return;
+        }
+
+        container.innerHTML = products.map(product => {
+            const productName = escapeHtml(product.name || 'Sản phẩm');
+            const author = escapeHtml(product.author || 'Đang cập nhật');
+            const imageUrl = escapeHtml(product.imageUrl || 'https://placehold.co/200x250/fff/333?text=Product');
+            const detailUrl = `pages/product-detail.html?id=${encodeURIComponent(product.id || '')}`;
+
+            return `
+                <a class="product-card" href="${detailUrl}">
+                    <div class="product-image">
+                        <img src="${imageUrl}" alt="${productName}">
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">${productName}</h3>
+                        <p class="product-author">${author}</p>
+                        <div class="product-price">
+                            <span class="current-price">${formatMoney(product.price)}</span>
+                        </div>
+                    </div>
+                </a>
+            `;
+        }).join('');
+    };
+
+    const renderHomeCategories = (categories) => {
+        const container = document.getElementById('homeCategoryList');
+        if (!container) return;
+
+        const baseItem = `<a href="pages/products.html" class="home-category-chip">Tất cả sản phẩm</a>`;
+        if (!Array.isArray(categories) || categories.length === 0) {
+            container.innerHTML = baseItem;
+            return;
+        }
+
+        const dynamicItems = categories.map(category => {
+            const name = escapeHtml(category.name || 'Danh mục');
+            const categoryId = encodeURIComponent(category.id || '');
+            return `<a href="pages/products.html?categoryId=${categoryId}" class="home-category-chip">${name}</a>`;
+        }).join('');
+
+        container.innerHTML = `${baseItem}${dynamicItems}`;
+    };
+
+    const renderHomeLatestNews = (newsItems) => {
+        const container = document.getElementById('homeLatestNews');
+        if (!container) return;
+
+        if (!Array.isArray(newsItems) || newsItems.length === 0) {
+            container.innerHTML = `
+                <div class="news-card">
+                    <h3 class="news-card-title">Chưa có tin tức mới</h3>
+                    <p class="news-card-desc">Tin tức sẽ được cập nhật sớm.</p>
+                    <div class="news-card-footer">
+                        <a href="pages/news.html" class="detail-link">Xem danh sách</a>
+                    </div>
+                </div>
+            `;
+            return;
+        }
+
+        container.innerHTML = newsItems.map(item => {
+            const title = escapeHtml(item.title || 'Tin tức');
+            const summary = escapeHtml(item.summary || 'Đang cập nhật nội dung...');
+            const thumbnail = escapeHtml(item.thumbnail || 'https://placehold.co/300x225/ffffff/9f2425?text=News');
+            const dateText = item.published_at
+                ? new Date(item.published_at).toLocaleDateString('vi-VN')
+                : '--/--/----';
+            const detailUrl = item.slug
+                ? `pages/news-detail.html?slug=${encodeURIComponent(item.slug)}`
+                : 'pages/news.html';
+
+            return `
+                <div class="news-card">
+                    <img class="news-card-img" src="${thumbnail}" alt="${title}">
+                    <h3 class="news-card-title">${title}</h3>
+                    <p class="news-card-desc">${summary}</p>
+                    <div class="news-card-footer">
+                        <a href="${detailUrl}" class="detail-link">Chi tiết</a>
+                        <span class="news-date">${dateText}</span>
+                    </div>
+                </div>
+            `;
+        }).join('');
+    };
+
+    const loadHomeData = async () => {
+        if (!isHomePage) return;
+        try {
+            const data = await apiRequest('/api/home?categoryLimit=8&productLimit=8&newsLimit=6');
+            renderHomeFeaturedProducts(data?.featuredProducts || []);
+            renderHomeCategories(data?.categories || []);
+            renderHomeLatestNews(data?.latestNews || []);
+        } catch (err) {
+            console.error('Không thể tải dữ liệu trang chủ:', err);
+        }
+    };
+    loadHomeData();
+
+    const homeSearchInput = document.querySelector('.search-bar input');
+    if (homeSearchInput) {
+        homeSearchInput.addEventListener('keydown', (event) => {
+            if (event.key !== 'Enter') return;
+            const keyword = homeSearchInput.value.trim();
+            if (!keyword) return;
+            const inPages = window.location.pathname.includes('/pages/');
+            const base = inPages ? '' : 'pages/';
+            window.location.href = `${base}products.html?keyword=${encodeURIComponent(keyword)}`;
+        });
+    }
 
     const logoutLinks = document.querySelectorAll('.logout-action, .logout-link');
     logoutLinks.forEach(link => {

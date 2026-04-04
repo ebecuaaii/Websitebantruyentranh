@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface ProductService {
     List<ProductResponse> getAllProducts();
+    List<ProductResponse> searchProducts(String keyword, String categoryId);
     List<ProductResponse> getProductsByCategory(String categoryId);
     ProductResponse getProductById(String id);
     ProductResponse createProduct(ProductRequest request);
