@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Dashboard - Kaleidoscope</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../css/admin.css" />
+  </head>
+  <body class="admin-layout">
+    <!-- Sidebar -->
+    <aside class="admin-sidebar">
+      <div class="sidebar-header">
+        <div class="logo">
+          <img
+            src="https://placehold.co/50x50/ffffff/9f2425?text=K"
+            alt="Logo"
+          />
+          <span>Kaleidoscope</span>
+        </div>
+        <button class="sidebar-toggle">
+          <i class="fas fa-chevron-left"></i>
+        </button>
+      </div>
+
+      <nav class="sidebar-nav">
+        <a href="admin-dashboard.html" class="nav-item active">
+          <i class="fas fa-chart-line"></i>
+          <span>Dashboard</span>
+        </a>
+        <a href="admin-users.html" class="nav-item">
+          <i class="fas fa-users"></i>
+          <span>Quản lý tài khoản</span>
+        </a>
+        <a href="admin-orders.html" class="nav-item">
+          <i class="fas fa-shopping-bag"></i>
+          <span>Quản lý đơn hàng</span>
+        </a>
+        <a href="admin-categories.html" class="nav-item">
+          <i class="fas fa-list"></i>
+          <span>Quản lý danh mục</span>
+        </a>
+        <a href="admin-products.html" class="nav-item">
+          <i class="fas fa-box"></i>
+          <span>Quản lý sản phẩm</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <a href="admin-profile.html" class="nav-item">
+          <i class="fas fa-cog"></i>
+          <span>Cài đặt</span>
+        </a>
+        <a href="#" class="nav-item logout">
+          <i class="fas fa-sign-out-alt"></i>
+          <span>Đăng xuất</span>
+        </a>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="admin-main">
+      <!-- Top Bar -->
+      <header class="admin-header">
+        <div class="header-left">
+          <button class="menu-toggle">
+            <i class="fas fa-bars"></i>
+          </button>
+          <h1>Dashboard</h1>
+        </div>
+        <div class="header-right">
+          <div class="search-box">
+            <i class="fas fa-search"></i>
+            <input type="text" placeholder="Tìm kiếm..." />
+          </div>
+          <div class="header-user">
+            <img
+              src="https://placehold.co/32x32/9f2425/ffffff?text=A"
+              alt="Admin"
+            />
+            <span>Admin</span>
+          </div>
+        </div>
+      </header>
+
+      <!-- Content -->
+      <main class="admin-content">
+        <!-- Stats Cards -->
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon" style="background-color: #e3f2fd">
+              <i class="fas fa-users" style="color: #1976d2"></i>
+            </div>
+            <div class="stat-info">
+              <div class="stat-label">Tổng khách hàng</div>
+              <div class="stat-value">1,256</div>
+              <div class="stat-change positive">+12% so với tháng trước</div>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon" style="background-color: #f3e5f5">
+              <i class="fas fa-shopping-bag" style="color: #7b1fa2"></i>
+            </div>
+            <div class="stat-info">
+              <div class="stat-label">Tổng đơn hàng</div>
+              <div class="stat-value">3,847</div>
+              <div class="stat-change positive">+8% so với tháng trước</div>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon" style="background-color: #fff3e0">
+              <i class="fas fa-dollar-sign" style="color: #f57c00"></i>
+            </div>
+            <div class="stat-info">
+              <div class="stat-label">Doanh thu</div>
+              <div class="stat-value">45.2M đ</div>
+              <div class="stat-change positive">+15% so với tháng trước</div>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon" style="background-color: #e8f5e9">
+              <i class="fas fa-box" style="color: #388e3c"></i>
+            </div>
+            <div class="stat-info">
+              <div class="stat-label">Sản phẩm</div>
+              <div class="stat-value">542</div>
+              <div class="stat-change negative">-3% so với tháng trước</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Charts -->
+        <div class="dashboard-grid">
+          <div class="chart-card">
+            <h3>Doanh thu tháng</h3>
+            <div class="chart-placeholder">
+              <p>📊 Biểu đồ doanh thu</p>
+            </div>
+          </div>
+
+          <div class="chart-card">
+            <h3>Đơn hàng gần đây</h3>
+            <table class="mini-table">
+              <thead>
+                <tr>
+                  <th>Đơn hàng</th>
+                  <th>Khách</th>
+                  <th>Giá</th>
+                  <th>Trạng thái</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>#1001</td>
+                  <td>Nguyễn Văn A</td>
+                  <td>850,000 đ</td>
+                  <td><span class="badge badge-success">Hoàn thành</span></td>
+                </tr>
+                <tr>
+                  <td>#1000</td>
+                  <td>Trần Thị B</td>
+                  <td>1,200,000 đ</td>
+                  <td><span class="badge badge-warning">Chờ giao</span></td>
+                </tr>
+                <tr>
+                  <td>#999</td>
+                  <td>Phạm Văn C</td>
+                  <td>650,000 đ</td>
+                  <td><span class="badge badge-success">Hoàn thành</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="quick-actions">
+          <h3>Actions nhanh</h3>
+          <div class="actions-grid">
+            <a href="admin-products-add.html" class="action-btn">
+              <i class="fas fa-plus-circle"></i>
+              <span>Thêm sản phẩm</span>
+            </a>
+            <a href="admin-categories-add.html" class="action-btn">
+              <i class="fas fa-folder-plus"></i>
+              <span>Thêm danh mục</span>
+            </a>
+            <a href="admin-orders.html" class="action-btn">
+              <i class="fas fa-tasks"></i>
+              <span>Xem đơn hàng</span>
+            </a>
+            <a href="admin-users.html" class="action-btn">
+              <i class="fas fa-user-tie"></i>
+              <span>Quản lý tài khoản</span>
+            </a>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <script src="../js/admin.js"></script>
+  </body>
+</html>
