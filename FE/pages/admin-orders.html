@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Quản lý tài khoản - Admin Dashboard</title>
+    <title>Quản lý đơn hàng - Admin Dashboard</title>
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
@@ -40,11 +40,11 @@
           <i class="fas fa-list"></i>
           <span>Quản lý danh mục</span>
         </a>
-        <a href="admin-orders.html" class="nav-item">
+        <a href="admin-orders.html" class="nav-item active">
           <i class="fas fa-shopping-bag"></i>
           <span>Quản lý đơn hàng</span>
         </a>
-        <a href="admin-users.html" class="nav-item active">
+        <a href="admin-users.html" class="nav-item">
           <i class="fas fa-users"></i>
           <span>Quản lý tài khoản</span>
         </a>
@@ -71,7 +71,7 @@
       <!-- Top Bar -->
       <header class="admin-header">
         <div class="header-left">
-          <h1>Quản lý tài khoản</h1>
+          <h1>Quản lý đơn hàng</h1>
         </div>
         <div class="header-right">
           <div class="search-box">
@@ -98,23 +98,20 @@
       <!-- Content -->
       <main class="admin-content">
         <div class="page-header">
-          <h2>Danh sách tài khoản người dùng</h2>
+          <h2>Danh sách đơn hàng</h2>
         </div>
 
         <div class="table-controls">
           <div class="filter-group">
             <select class="form-control">
               <option>Tất cả trạng thái</option>
-              <option>Hoạt động</option>
-              <option>Khóa</option>
-              <option>Chưa xác thực</option>
+              <option>Chờ xác nhận</option>
+              <option>Đã xác nhận</option>
+              <option>Đang giao</option>
+              <option>Đã giao</option>
+              <option>Hủy</option>
             </select>
-            <select class="form-control">
-              <option>Tất cả vai trò</option>
-              <option>Admin</option>
-              <option>Khách hàng</option>
-              <option>Nhà cung cấp</option>
-            </select>
+            <input type="date" class="form-control" />
           </div>
         </div>
 
@@ -125,107 +122,101 @@
                 <th>
                   <input type="checkbox" class="select-all" />
                 </th>
-                <th>Tên người dùng</th>
-                <th>Email</th>
-                <th>Số điện thoại</th>
-                <th>Vai trò</th>
+                <th>Mã đơn hàng</th>
+                <th>Khách hàng</th>
+                <th>Tổng giá</th>
+                <th>Ngày đặt</th>
                 <th>Trạng thái</th>
-                <th>Ngày tham gia</th>
                 <th>Hành động</th>
               </tr>
             </thead>
             <tbody>
               <tr>
                 <td><input type="checkbox" /></td>
+                <td><span class="order-code">SPX11111222</span></td>
                 <td>Nguyễn Hồ Ngọc Trúc</td>
-                <td>truc@example.com</td>
-                <td>090 123 4567</td>
-                <td><span class="role-badge admin">Admin</span></td>
-                <td><span class="status-badge active">Hoạt động</span></td>
-                <td>15/01/2025</td>
+                <td>1.500.000 đ</td>
+                <td>26/01/2026</td>
+                <td><span class="status-badge pending">Chờ xác nhận</span></td>
                 <td>
                   <div class="action-buttons">
-                    <a href="admin-user-edit.html?id=1" class="btn-icon" title="Sửa">
-                      <i class="fas fa-edit"></i>
+                    <a href="admin-order-detail.html?id=1" class="btn-icon" title="Chi tiết">
+                      <i class="fas fa-eye"></i>
                     </a>
-                    <button class="btn-icon danger" title="Xóa">
-                      <i class="fas fa-trash"></i>
+                    <button class="btn-icon" title="Cập nhật">
+                      <i class="fas fa-edit"></i>
                     </button>
                   </div>
                 </td>
               </tr>
               <tr>
                 <td><input type="checkbox" /></td>
+                <td><span class="order-code">SPX11111221</span></td>
                 <td>Trần Văn B</td>
-                <td>tranb@example.com</td>
-                <td>090 234 5678</td>
-                <td><span class="role-badge user">Khách hàng</span></td>
-                <td><span class="status-badge active">Hoạt động</span></td>
-                <td>10/01/2025</td>
+                <td>2.250.000 đ</td>
+                <td>25/01/2026</td>
+                <td><span class="status-badge shipping">Đang giao</span></td>
                 <td>
                   <div class="action-buttons">
-                    <a href="admin-user-edit.html?id=2" class="btn-icon" title="Sửa">
-                      <i class="fas fa-edit"></i>
+                    <a href="admin-order-detail.html?id=2" class="btn-icon" title="Chi tiết">
+                      <i class="fas fa-eye"></i>
                     </a>
-                    <button class="btn-icon danger" title="Xóa">
-                      <i class="fas fa-trash"></i>
+                    <button class="btn-icon" title="Cập nhật">
+                      <i class="fas fa-edit"></i>
                     </button>
                   </div>
                 </td>
               </tr>
               <tr>
                 <td><input type="checkbox" /></td>
+                <td><span class="order-code">SPX11111220</span></td>
                 <td>Phạm Thị C</td>
-                <td>phamc@example.com</td>
-                <td>090 345 6789</td>
-                <td><span class="role-badge user">Khách hàng</span></td>
-                <td><span class="status-badge active">Hoạt động</span></td>
-                <td>05/01/2025</td>
+                <td>975.000 đ</td>
+                <td>24/01/2026</td>
+                <td><span class="status-badge completed">Đã giao</span></td>
                 <td>
                   <div class="action-buttons">
-                    <a href="admin-user-edit.html?id=3" class="btn-icon" title="Sửa">
-                      <i class="fas fa-edit"></i>
+                    <a href="admin-order-detail.html?id=3" class="btn-icon" title="Chi tiết">
+                      <i class="fas fa-eye"></i>
                     </a>
-                    <button class="btn-icon danger" title="Xóa">
-                      <i class="fas fa-trash"></i>
+                    <button class="btn-icon" title="Cập nhật">
+                      <i class="fas fa-edit"></i>
                     </button>
                   </div>
                 </td>
               </tr>
               <tr>
                 <td><input type="checkbox" /></td>
+                <td><span class="order-code">SPX11111219</span></td>
                 <td>Lê Thanh D</td>
-                <td>led@example.com</td>
-                <td>090 456 7890</td>
-                <td><span class="role-badge user">Khách hàng</span></td>
-                <td><span class="status-badge inactive">Khóa</span></td>
-                <td>20/12/2024</td>
+                <td>1.800.000 đ</td>
+                <td>23/01/2026</td>
+                <td><span class="status-badge completed">Đã giao</span></td>
                 <td>
                   <div class="action-buttons">
-                    <a href="admin-user-edit.html?id=4" class="btn-icon" title="Sửa">
-                      <i class="fas fa-edit"></i>
+                    <a href="admin-order-detail.html?id=4" class="btn-icon" title="Chi tiết">
+                      <i class="fas fa-eye"></i>
                     </a>
-                    <button class="btn-icon danger" title="Xóa">
-                      <i class="fas fa-trash"></i>
+                    <button class="btn-icon" title="Cập nhật">
+                      <i class="fas fa-edit"></i>
                     </button>
                   </div>
                 </td>
               </tr>
               <tr>
                 <td><input type="checkbox" /></td>
+                <td><span class="order-code">SPX11111218</span></td>
                 <td>Ngô Minh E</td>
-                <td>noe@example.com</td>
-                <td>090 567 8901</td>
-                <td><span class="role-badge user">Khách hàng</span></td>
-                <td><span class="status-badge active">Hoạt động</span></td>
-                <td>18/12/2024</td>
+                <td>650.000 đ</td>
+                <td>22/01/2026</td>
+                <td><span class="status-badge cancelled">Hủy</span></td>
                 <td>
                   <div class="action-buttons">
-                    <a href="admin-user-edit.html?id=5" class="btn-icon" title="Sửa">
-                      <i class="fas fa-edit"></i>
+                    <a href="admin-order-detail.html?id=5" class="btn-icon" title="Chi tiết">
+                      <i class="fas fa-eye"></i>
                     </a>
-                    <button class="btn-icon danger" title="Xóa">
-                      <i class="fas fa-trash"></i>
+                    <button class="btn-icon" title="Cập nhật">
+                      <i class="fas fa-edit"></i>
                     </button>
                   </div>
                 </td>

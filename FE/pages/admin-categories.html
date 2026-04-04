@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Quản lý tài khoản - Admin Dashboard</title>
+    <title>Quản lý danh mục - Admin Dashboard</title>
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
@@ -36,7 +36,7 @@
           <i class="fas fa-box"></i>
           <span>Quản lý sản phẩm</span>
         </a>
-        <a href="admin-categories.html" class="nav-item">
+        <a href="admin-categories.html" class="nav-item active">
           <i class="fas fa-list"></i>
           <span>Quản lý danh mục</span>
         </a>
@@ -44,7 +44,7 @@
           <i class="fas fa-shopping-bag"></i>
           <span>Quản lý đơn hàng</span>
         </a>
-        <a href="admin-users.html" class="nav-item active">
+        <a href="admin-users.html" class="nav-item">
           <i class="fas fa-users"></i>
           <span>Quản lý tài khoản</span>
         </a>
@@ -71,7 +71,7 @@
       <!-- Top Bar -->
       <header class="admin-header">
         <div class="header-left">
-          <h1>Quản lý tài khoản</h1>
+          <h1>Quản lý danh mục</h1>
         </div>
         <div class="header-right">
           <div class="search-box">
@@ -98,24 +98,10 @@
       <!-- Content -->
       <main class="admin-content">
         <div class="page-header">
-          <h2>Danh sách tài khoản người dùng</h2>
-        </div>
-
-        <div class="table-controls">
-          <div class="filter-group">
-            <select class="form-control">
-              <option>Tất cả trạng thái</option>
-              <option>Hoạt động</option>
-              <option>Khóa</option>
-              <option>Chưa xác thực</option>
-            </select>
-            <select class="form-control">
-              <option>Tất cả vai trò</option>
-              <option>Admin</option>
-              <option>Khách hàng</option>
-              <option>Nhà cung cấp</option>
-            </select>
-          </div>
+          <h2>Danh sách danh mục</h2>
+          <a href="admin-categories-add.html" class="btn btn-primary">
+            <i class="fas fa-plus"></i> Thêm danh mục
+          </a>
         </div>
 
         <div class="table-responsive">
@@ -125,27 +111,25 @@
                 <th>
                   <input type="checkbox" class="select-all" />
                 </th>
-                <th>Tên người dùng</th>
-                <th>Email</th>
-                <th>Số điện thoại</th>
-                <th>Vai trò</th>
+                <th>Tên danh mục</th>
+                <th>Mô tả</th>
+                <th>Số sản phẩm</th>
                 <th>Trạng thái</th>
-                <th>Ngày tham gia</th>
                 <th>Hành động</th>
               </tr>
             </thead>
             <tbody>
               <tr>
                 <td><input type="checkbox" /></td>
-                <td>Nguyễn Hồ Ngọc Trúc</td>
-                <td>truc@example.com</td>
-                <td>090 123 4567</td>
-                <td><span class="role-badge admin">Admin</span></td>
-                <td><span class="status-badge active">Hoạt động</span></td>
-                <td>15/01/2025</td>
+                <td>
+                  <span class="category-name">Manga</span>
+                </td>
+                <td>Truyện tranh Nhật Bản</td>
+                <td><span class="badge">45</span></td>
+                <td><span class="status-badge active">Hiển thị</span></td>
                 <td>
                   <div class="action-buttons">
-                    <a href="admin-user-edit.html?id=1" class="btn-icon" title="Sửa">
+                    <a href="admin-category-edit.html?id=1" class="btn-icon" title="Sửa">
                       <i class="fas fa-edit"></i>
                     </a>
                     <button class="btn-icon danger" title="Xóa">
@@ -156,15 +140,15 @@
               </tr>
               <tr>
                 <td><input type="checkbox" /></td>
-                <td>Trần Văn B</td>
-                <td>tranb@example.com</td>
-                <td>090 234 5678</td>
-                <td><span class="role-badge user">Khách hàng</span></td>
-                <td><span class="status-badge active">Hoạt động</span></td>
-                <td>10/01/2025</td>
+                <td>
+                  <span class="category-name">Manhwa</span>
+                </td>
+                <td>Truyện tranh Hàn Quốc</td>
+                <td><span class="badge">28</span></td>
+                <td><span class="status-badge active">Hiển thị</span></td>
                 <td>
                   <div class="action-buttons">
-                    <a href="admin-user-edit.html?id=2" class="btn-icon" title="Sửa">
+                    <a href="admin-category-edit.html?id=2" class="btn-icon" title="Sửa">
                       <i class="fas fa-edit"></i>
                     </a>
                     <button class="btn-icon danger" title="Xóa">
@@ -175,15 +159,15 @@
               </tr>
               <tr>
                 <td><input type="checkbox" /></td>
-                <td>Phạm Thị C</td>
-                <td>phamc@example.com</td>
-                <td>090 345 6789</td>
-                <td><span class="role-badge user">Khách hàng</span></td>
-                <td><span class="status-badge active">Hoạt động</span></td>
-                <td>05/01/2025</td>
+                <td>
+                  <span class="category-name">Light Novel</span>
+                </td>
+                <td>Tiểu thuyết ánh sáng Nhật Bản</td>
+                <td><span class="badge">15</span></td>
+                <td><span class="status-badge active">Hiển thị</span></td>
                 <td>
                   <div class="action-buttons">
-                    <a href="admin-user-edit.html?id=3" class="btn-icon" title="Sửa">
+                    <a href="admin-category-edit.html?id=3" class="btn-icon" title="Sửa">
                       <i class="fas fa-edit"></i>
                     </a>
                     <button class="btn-icon danger" title="Xóa">
@@ -194,15 +178,15 @@
               </tr>
               <tr>
                 <td><input type="checkbox" /></td>
-                <td>Lê Thanh D</td>
-                <td>led@example.com</td>
-                <td>090 456 7890</td>
-                <td><span class="role-badge user">Khách hàng</span></td>
-                <td><span class="status-badge inactive">Khóa</span></td>
-                <td>20/12/2024</td>
+                <td>
+                  <span class="category-name">Figure</span>
+                </td>
+                <td>Mô hình/tượng nhân vật</td>
+                <td><span class="badge">52</span></td>
+                <td><span class="status-badge active">Hiển thị</span></td>
                 <td>
                   <div class="action-buttons">
-                    <a href="admin-user-edit.html?id=4" class="btn-icon" title="Sửa">
+                    <a href="admin-category-edit.html?id=4" class="btn-icon" title="Sửa">
                       <i class="fas fa-edit"></i>
                     </a>
                     <button class="btn-icon danger" title="Xóa">
@@ -213,15 +197,15 @@
               </tr>
               <tr>
                 <td><input type="checkbox" /></td>
-                <td>Ngô Minh E</td>
-                <td>noe@example.com</td>
-                <td>090 567 8901</td>
-                <td><span class="role-badge user">Khách hàng</span></td>
-                <td><span class="status-badge active">Hoạt động</span></td>
-                <td>18/12/2024</td>
+                <td>
+                  <span class="category-name">Merch</span>
+                </td>
+                <td>Hàng lưu niệm & phụ kiện</td>
+                <td><span class="badge">38</span></td>
+                <td><span class="status-badge active">Hiển thị</span></td>
                 <td>
                   <div class="action-buttons">
-                    <a href="admin-user-edit.html?id=5" class="btn-icon" title="Sửa">
+                    <a href="admin-category-edit.html?id=5" class="btn-icon" title="Sửa">
                       <i class="fas fa-edit"></i>
                     </a>
                     <button class="btn-icon danger" title="Xóa">
@@ -239,8 +223,6 @@
             <i class="fas fa-chevron-left"></i>
           </button>
           <button class="btn-paging active">1</button>
-          <button class="btn-paging">2</button>
-          <button class="btn-paging">3</button>
           <button class="btn-paging">
             <i class="fas fa-chevron-right"></i>
           </button>
