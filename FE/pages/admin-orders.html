@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quản lý đơn hàng - Admin Dashboard</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../css/admin.css" />
+  </head>
+  <body class="admin-layout">
+    <!-- Sidebar -->
+    <aside class="admin-sidebar">
+      <div class="sidebar-header">
+        <div class="logo">
+          <img
+            src="https://placehold.co/50x50/ffffff/9f2425?text=K"
+            alt="Logo"
+          />
+          <span>Kaleidoscope</span>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <a href="admin-dashboard.html" class="nav-item">
+          <i class="fas fa-chart-line"></i>
+          <span>Dashboard</span>
+        </a>
+        <a href="admin-products.html" class="nav-item">
+          <i class="fas fa-box"></i>
+          <span>Quản lý sản phẩm</span>
+        </a>
+        <a href="admin-categories.html" class="nav-item">
+          <i class="fas fa-list"></i>
+          <span>Quản lý danh mục</span>
+        </a>
+        <a href="admin-orders.html" class="nav-item active">
+          <i class="fas fa-shopping-bag"></i>
+          <span>Quản lý đơn hàng</span>
+        </a>
+        <a href="admin-users.html" class="nav-item">
+          <i class="fas fa-users"></i>
+          <span>Quản lý tài khoản</span>
+        </a>
+        <a href="admin-coupons.html" class="nav-item">
+          <i class="fas fa-ticket-alt"></i>
+          <span>Coupon/Khuyến mãi</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <a href="admin-profile.html" class="nav-item">
+          <i class="fas fa-cog"></i>
+          <span>Cài đặt</span>
+        </a>
+        <a href="#" class="nav-item logout">
+          <i class="fas fa-sign-out-alt"></i>
+          <span>Đăng xuất</span>
+        </a>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="admin-main">
+      <!-- Top Bar -->
+      <header class="admin-header">
+        <div class="header-left">
+          <h1>Quản lý đơn hàng</h1>
+        </div>
+        <div class="header-right">
+          <div class="search-box">
+            <i class="fas fa-search"></i>
+            <input type="text" placeholder="Tìm kiếm..." />
+          </div>
+          <div class="notification-icon">
+            <i class="fas fa-bell"></i>
+            <span class="notification-badge">3</span>
+          </div>
+          <div class="header-user">
+            <img
+              src="https://placehold.co/32x32/9f2425/ffffff?text=A"
+              alt="Admin"
+            />
+            <div class="user-info">
+              <span class="user-name">Super Admin</span>
+              <span class="user-email">admin@gmail.com</span>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- Content -->
+      <main class="admin-content">
+        <div class="page-header">
+          <h2>Danh sách đơn hàng</h2>
+        </div>
+
+        <div class="table-controls">
+          <div class="filter-group">
+            <select class="form-control">
+              <option>Tất cả trạng thái</option>
+              <option>Chờ xác nhận</option>
+              <option>Đã xác nhận</option>
+              <option>Đang giao</option>
+              <option>Đã giao</option>
+              <option>Hủy</option>
+            </select>
+            <input type="date" class="form-control" />
+          </div>
+        </div>
+
+        <div class="table-responsive">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>
+                  <input type="checkbox" class="select-all" />
+                </th>
+                <th>Mã đơn hàng</th>
+                <th>Khách hàng</th>
+                <th>Tổng giá</th>
+                <th>Ngày đặt</th>
+                <th>Trạng thái</th>
+                <th>Hành động</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><input type="checkbox" /></td>
+                <td><span class="order-code">SPX11111222</span></td>
+                <td>Nguyễn Hồ Ngọc Trúc</td>
+                <td>1.500.000 đ</td>
+                <td>26/01/2026</td>
+                <td><span class="status-badge pending">Chờ xác nhận</span></td>
+                <td>
+                  <div class="action-buttons">
+                    <a href="admin-order-detail.html?id=1" class="btn-icon" title="Chi tiết">
+                      <i class="fas fa-eye"></i>
+                    </a>
+                    <button class="btn-icon" title="Cập nhật">
+                      <i class="fas fa-edit"></i>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td><input type="checkbox" /></td>
+                <td><span class="order-code">SPX11111221</span></td>
+                <td>Trần Văn B</td>
+                <td>2.250.000 đ</td>
+                <td>25/01/2026</td>
+                <td><span class="status-badge shipping">Đang giao</span></td>
+                <td>
+                  <div class="action-buttons">
+                    <a href="admin-order-detail.html?id=2" class="btn-icon" title="Chi tiết">
+                      <i class="fas fa-eye"></i>
+                    </a>
+                    <button class="btn-icon" title="Cập nhật">
+                      <i class="fas fa-edit"></i>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td><input type="checkbox" /></td>
+                <td><span class="order-code">SPX11111220</span></td>
+                <td>Phạm Thị C</td>
+                <td>975.000 đ</td>
+                <td>24/01/2026</td>
+                <td><span class="status-badge completed">Đã giao</span></td>
+                <td>
+                  <div class="action-buttons">
+                    <a href="admin-order-detail.html?id=3" class="btn-icon" title="Chi tiết">
+                      <i class="fas fa-eye"></i>
+                    </a>
+                    <button class="btn-icon" title="Cập nhật">
+                      <i class="fas fa-edit"></i>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td><input type="checkbox" /></td>
+                <td><span class="order-code">SPX11111219</span></td>
+                <td>Lê Thanh D</td>
+                <td>1.800.000 đ</td>
+                <td>23/01/2026</td>
+                <td><span class="status-badge completed">Đã giao</span></td>
+                <td>
+                  <div class="action-buttons">
+                    <a href="admin-order-detail.html?id=4" class="btn-icon" title="Chi tiết">
+                      <i class="fas fa-eye"></i>
+                    </a>
+                    <button class="btn-icon" title="Cập nhật">
+                      <i class="fas fa-edit"></i>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td><input type="checkbox" /></td>
+                <td><span class="order-code">SPX11111218</span></td>
+                <td>Ngô Minh E</td>
+                <td>650.000 đ</td>
+                <td>22/01/2026</td>
+                <td><span class="status-badge cancelled">Hủy</span></td>
+                <td>
+                  <div class="action-buttons">
+                    <a href="admin-order-detail.html?id=5" class="btn-icon" title="Chi tiết">
+                      <i class="fas fa-eye"></i>
+                    </a>
+                    <button class="btn-icon" title="Cập nhật">
+                      <i class="fas fa-edit"></i>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="pagination">
+          <button class="btn-paging" disabled>
+            <i class="fas fa-chevron-left"></i>
+          </button>
+          <button class="btn-paging active">1</button>
+          <button class="btn-paging">2</button>
+          <button class="btn-paging">3</button>
+          <button class="btn-paging">
+            <i class="fas fa-chevron-right"></i>
+          </button>
+        </div>
+      </main>
+    </div>
+
+    <script src="../js/admin.js"></script>
+  </body>
+</html>
