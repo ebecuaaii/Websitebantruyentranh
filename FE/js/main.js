@@ -304,6 +304,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 setSession(data.token, data.user);
                 window.location.href = 'profile.html';
             } catch (err) {
+                const rawMessage = (err.message || '').toLowerCase();
+                if (rawMessage.includes('email already exists')) {
+                    showMessage(registerForm, 'Email này đã được đăng ký. Hãy dùng email khác hoặc đăng nhập.');
+                    return;
+                }
+                if (rawMessage.includes('username already exists')) {
+                    showMessage(registerForm, 'Tên đăng nhập đã tồn tại. Vui lòng chọn tên khác.');
+                    return;
+                }
                 showMessage(registerForm, err.message || 'Đăng ký thất bại');
             }
         });
