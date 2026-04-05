@@ -35,3 +35,5 @@ build/
 ### Sensitive config ###
 src/main/resources/application.properties
 .env
+.env.*
+.env.example

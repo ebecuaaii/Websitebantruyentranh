@@ -1,117 +1,163 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kaleidoscope - Quản lý tài khoản</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../css/style.css">
-</head>
-<body class="admin-shell">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quản lý tài khoản - Admin Dashboard</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../css/admin.css" />
+  </head>
+  <body class="admin-layout">
+    <!-- Sidebar -->
     <aside class="admin-sidebar">
-        <div class="admin-logo">
-            <img src="https://placehold.co/44x44/ffffff/9f2425?text=K" alt="Kaleidoscope Logo">
-            <span>Kaleidoscope</span>
+      <div class="sidebar-header">
+        <div class="logo">
+          <img
+            src="https://placehold.co/50x50/ffffff/9f2425?text=K"
+            alt="Logo"
+          />
+          <span>Kaleidoscope</span>
         </div>
-        <nav class="admin-nav">
-            <a href="#" class="admin-nav-item"><i class="fa-solid fa-chart-pie"></i> Dashboard</a>
-            <a href="#" class="admin-nav-item"><i class="fa-solid fa-box"></i> Quản lý sản phẩm</a>
-            <a href="#" class="admin-nav-item"><i class="fa-solid fa-layer-group"></i> Quản lý danh mục</a>
-            <a href="#" class="admin-nav-item"><i class="fa-solid fa-bag-shopping"></i> Quản lý đơn hàng</a>
-            <a href="admin-users.html" class="admin-nav-item active"><i class="fa-solid fa-users"></i> Quản lý người dùng</a>
-            <a href="#" class="admin-nav-item"><i class="fa-solid fa-ticket"></i> Coupon/Khuyến mãi</a>
-            <a href="#" class="admin-nav-item"><i class="fa-solid fa-gear"></i> Cài đặt</a>
-        </nav>
+      </div>
+
+      <nav class="sidebar-nav">
+        <a href="admin-dashboard.html" class="nav-item">
+          <i class="fas fa-chart-line"></i>
+          <span>Dashboard</span>
+        </a>
+        <a href="admin-products.html" class="nav-item">
+          <i class="fas fa-box"></i>
+          <span>Quản lý sản phẩm</span>
+        </a>
+        <a href="admin-categories.html" class="nav-item">
+          <i class="fas fa-list"></i>
+          <span>Quản lý danh mục</span>
+        </a>
+        <a href="admin-orders.html" class="nav-item">
+          <i class="fas fa-shopping-bag"></i>
+          <span>Quản lý đơn hàng</span>
+        </a>
+        <a href="admin-users.html" class="nav-item active">
+          <i class="fas fa-users"></i>
+          <span>Quản lý tài khoản</span>
+        </a>
+        <a href="admin-coupons.html" class="nav-item">
+          <i class="fas fa-ticket-alt"></i>
+          <span>Coupon/Khuyến mãi</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <a href="admin-profile.html" class="nav-item">
+          <i class="fas fa-cog"></i>
+          <span>Cài đặt</span>
+        </a>
+        <a href="#" class="nav-item logout">
+          <i class="fas fa-sign-out-alt"></i>
+          <span>Đăng xuất</span>
+        </a>
+      </div>
     </aside>
 
-    <main class="admin-main">
-        <header class="admin-header">
-            <div class="admin-title">
-                <a class="admin-back" href="auth.html"><i class="fa-solid fa-arrow-left"></i></a>
-                <h1>QUẢN LÝ TÀI KHOẢN</h1>
+    <!-- Main Content -->
+    <div class="admin-main">
+      <!-- Top Bar -->
+      <header class="admin-header">
+        <div class="header-left">
+          <h1>Quản lý tài khoản</h1>
+        </div>
+        <div class="header-right">
+          <div class="search-box">
+            <i class="fas fa-search"></i>
+            <input type="text" placeholder="Tìm kiếm..." />
+          </div>
+          <div class="notification-icon">
+            <i class="fas fa-bell"></i>
+            <span class="notification-badge">3</span>
+          </div>
+          <div class="header-user">
+            <img
+              src="https://placehold.co/32x32/9f2425/ffffff?text=A"
+              alt="Admin"
+            />
+            <div class="user-info">
+              <span class="user-name">Super Admin</span>
+              <span class="user-email">admin@gmail.com</span>
             </div>
-            <div class="admin-search">
-                <i class="fa-solid fa-magnifying-glass"></i>
-                <input type="text" placeholder="Tìm kiếm theo tên, email, sđt">
-            </div>
-            <div class="admin-filter">
-                <label>Sắp xếp:</label>
-                <select>
-                    <option>Mới nhất</option>
-                    <option>Cũ nhất</option>
-                </select>
-            </div>
-        </header>
+          </div>
+        </div>
+      </header>
 
-        <section class="admin-form">
-            <h2>Thêm / Cập nhật tài khoản</h2>
-            <form id="adminUserForm">
-                <input type="hidden" name="id">
-                <div class="admin-form-grid">
-                    <div>
-                        <label>Username *</label>
-                        <input type="text" name="username" required>
-                    </div>
-                    <div>
-                        <label>Email *</label>
-                        <input type="email" name="email" required>
-                    </div>
-                    <div>
-                        <label>Mật khẩu *</label>
-                        <input type="password" name="password" required>
-                    </div>
-                    <div>
-                        <label>Họ tên</label>
-                        <input type="text" name="fullName">
-                    </div>
-                    <div>
-                        <label>Số điện thoại</label>
-                        <input type="text" name="phone">
-                    </div>
-                    <div>
-                        <label>Avatar URL</label>
-                        <input type="text" name="avatar">
-                    </div>
-                    <div>
-                        <label>Vai trò</label>
-                        <select name="role">
-                            <option value="USER">User</option>
-                            <option value="ADMIN">Admin</option>
-                        </select>
-                    </div>
-                    <div class="admin-check">
-                        <label>
-                            <input type="checkbox" name="enabled" checked>
-                            Hoạt động
-                        </label>
-                    </div>
-                </div>
-                <div class="admin-form-actions">
-                    <button type="submit" class="auth-btn primary">Lưu</button>
-                    <button type="button" class="auth-btn" id="adminUserReset">Làm mới</button>
-                </div>
-            </form>
-        </section>
+      <!-- Content -->
+      <main class="admin-content">
+        <div class="page-header">
+          <h2>Danh sách tài khoản người dùng</h2>
+        </div>
 
-        <section class="admin-table-wrapper">
-            <table class="admin-table">
-                <thead>
-                    <tr>
-                        <th>Người dùng</th>
-                        <th>Vai trò</th>
-                        <th>Số điện thoại</th>
-                        <th>Email</th>
-                        <th>Ngày đăng ký</th>
-                        <th>Trạng thái</th>
-                        <th>Tác vụ</th>
-                    </tr>
-                </thead>
-                <tbody id="adminUserTbody"></tbody>
-            </table>
-        </section>
-    </main>
+        <form class="admin-form" id="adminUserForm">
+          <input type="hidden" name="id" />
+          <div class="table-controls">
+            <div class="filter-group">
+              <input class="form-control" type="text" name="username" placeholder="Username" required />
+              <input class="form-control" type="email" name="email" placeholder="Email" required />
+              <input class="form-control" type="password" name="password" placeholder="Mật khẩu" />
+              <input class="form-control" type="text" name="fullName" placeholder="Họ tên" />
+              <input class="form-control" type="text" name="phone" placeholder="Số điện thoại" />
+              <input class="form-control" type="text" name="avatar" placeholder="Avatar URL" />
+              <select class="form-control" name="role">
+                <option value="USER">USER</option>
+                <option value="ADMIN">ADMIN</option>
+              </select>
+              <label class="form-control" style="display: flex; align-items: center; gap: 8px;">
+                <input type="checkbox" name="enabled" checked />
+                Hoạt động
+              </label>
+            </div>
+            <div class="filter-group">
+              <button class="btn-paging active" type="submit">Lưu</button>
+              <button class="btn-paging" type="button" id="adminUserReset">Làm mới</button>
+            </div>
+          </div>
+        </form>
+
+        <div class="table-responsive">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Tên người dùng</th>
+                <th>Vai trò</th>
+                <th>Số điện thoại</th>
+                <th>Email</th>
+                <th>Ngày tham gia</th>
+                <th>Trạng thái</th>
+                <th>Hành động</th>
+              </tr>
+            </thead>
+            <tbody id="adminUserTbody"></tbody>
+          </table>
+        </div>
+
+        <div class="pagination">
+          <button class="btn-paging" disabled>
+            <i class="fas fa-chevron-left"></i>
+          </button>
+          <button class="btn-paging active">1</button>
+          <button class="btn-paging">2</button>
+          <button class="btn-paging">3</button>
+          <button class="btn-paging">
+            <i class="fas fa-chevron-right"></i>
+          </button>
+        </div>
+      </main>
+    </div>
 
     <script src="../js/main.js"></script>
-</body>
+  </body>
 </html>
