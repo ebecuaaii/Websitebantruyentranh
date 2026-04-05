@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -76,6 +78,16 @@ public class JwtService {
 
     private Key getSigningKey() {
         byte[] keyBytes = secret.getBytes(StandardCharsets.UTF_8);
+
+        // HS256 requires >= 256-bit (32 bytes). If env secret is shorter, derive a 32-byte key.
+        if (keyBytes.length < 32) {
+            try {
+                keyBytes = MessageDigest.getInstance("SHA-256").digest(keyBytes);
+            } catch (NoSuchAlgorithmException e) {
+                throw new RuntimeException("Không thể khởi tạo SHA-256 để tạo JWT signing key", e);
+            }
+        }
+
         return Keys.hmacShaKeyFor(keyBytes);
     }
 }

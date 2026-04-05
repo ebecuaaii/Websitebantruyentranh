@@ -1,6 +1,6 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.response.NewsApiResponse;
+import com.example.demo.dto.response.BaseResponse;
 import com.example.demo.dto.response.NewsResponse;
 import com.example.demo.dto.response.NewsSummaryResponse;
 import com.example.demo.service.NewsService;
@@ -20,17 +20,17 @@ public class NewsController {
     private final NewsService newsService;
 
     @GetMapping
-    public NewsApiResponse<List<NewsSummaryResponse>> getAll() {
-        return NewsApiResponse.success(newsService.getAllNews());
+    public BaseResponse<List<NewsSummaryResponse>> getAll() {
+        return BaseResponse.success(newsService.getAllNews());
     }
 
     @GetMapping("/{id}")
-    public NewsApiResponse<NewsResponse> getById(@PathVariable Long id) {
-        return NewsApiResponse.success(newsService.getById(id));
+    public BaseResponse<NewsResponse> getById(@PathVariable Long id) {
+        return BaseResponse.success(newsService.getById(id));
     }
 
     @GetMapping("/slug/{slug}")
-    public NewsApiResponse<NewsResponse> getBySlug(@PathVariable String slug) {
-        return NewsApiResponse.success(newsService.getBySlug(slug));
+    public BaseResponse<NewsResponse> getBySlug(@PathVariable String slug) {
+        return BaseResponse.success(newsService.getBySlug(slug));
     }
 }

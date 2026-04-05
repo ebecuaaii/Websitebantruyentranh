@@ -7,6 +7,10 @@ Base URL: `http://localhost:8080`
 ### Health Check
 - `GET /api/test`
 
+### Home
+- `GET /api/home`
+- `GET /api/home?categoryLimit={n}&productLimit={n}&newsLimit={n}`
+
 ### Auth
 - `POST /api/auth/register`
 - `POST /api/auth/login`
@@ -18,6 +22,9 @@ Base URL: `http://localhost:8080`
 
 ### Products
 - `GET /api/products`
+- `GET /api/products?keyword={keyword}`
+- `GET /api/products?categoryId={categoryId}`
+- `GET /api/products?keyword={keyword}&categoryId={categoryId}`
 - `GET /api/products/{id}`
 - `GET /api/products/{id}/reviews`
 
@@ -29,7 +36,8 @@ Base URL: `http://localhost:8080`
 Sample detail response format:
 ```json
 {
-  "status": "success",
+  "status": 200,
+  "message": "Success",
   "data": {
     "id": 101,
     "title": "Top 5 cuốn sách kinh tế đáng đọc nhất đầu năm 2026",

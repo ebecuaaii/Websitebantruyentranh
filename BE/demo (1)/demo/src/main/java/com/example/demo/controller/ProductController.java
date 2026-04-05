@@ -16,8 +16,10 @@ public class ProductController {
     private final ProductService productService;
 
     @GetMapping
-    public BaseResponse<List<ProductResponse>> getAll() {
-        return BaseResponse.success(productService.getAllProducts());
+    public BaseResponse<List<ProductResponse>> getAll(
+            @RequestParam(required = false) String keyword,
+            @RequestParam(required = false) String categoryId) {
+        return BaseResponse.success(productService.searchProducts(keyword, categoryId));
     }
 
     @GetMapping("/{id}")

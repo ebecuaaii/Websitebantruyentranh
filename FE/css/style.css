@@ -411,6 +411,33 @@ ul {
     background-color: #7a1b1c;
 }
 
+/* --- Home Categories --- */
+.home-category-section {
+    margin-bottom: 40px;
+}
+.home-category-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+.home-category-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 14px;
+    border: 1px solid #9f2425;
+    border-radius: 20px;
+    color: #9f2425;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+}
+.home-category-chip:hover {
+    background-color: #9f2425;
+    color: #fff;
+}
+
 /* --- Footer --- */
 .main-footer {
     background-color: #9f2425;

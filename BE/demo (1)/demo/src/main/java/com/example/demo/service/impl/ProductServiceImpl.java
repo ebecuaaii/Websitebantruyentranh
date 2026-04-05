@@ -13,11 +13,13 @@ import com.example.demo.repository.ProductRepository;
 import com.example.demo.repository.ReviewRepository;
 import com.example.demo.service.ProductService;
 import com.example.demo.service.UserService;
+import com.example.demo.util.AppUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @Service
@@ -31,9 +33,30 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<ProductResponse> getAllProducts() {
-        return productRepository.findAll().stream()
-                .map(product -> ProductResponse.from(product, getCategoryName(product.getCategoryId())))
-                .collect(Collectors.toList());
+        return mapProducts(productRepository.findAll());
+    }
+
+    @Override
+    public List<ProductResponse> searchProducts(String keyword, String categoryId) {
+        boolean hasKeyword = !AppUtil.isNullOrEmpty(keyword);
+        boolean hasCategory = !AppUtil.isNullOrEmpty(categoryId);
+
+        if (!hasKeyword && !hasCategory) {
+            return getAllProducts();
+        }
+        if (!hasKeyword) {
+            return getProductsByCategory(categoryId);
+        }
+
+        String safeKeywordRegex = Pattern.quote(keyword.trim());
+        if (hasCategory) {
+            String categoryName = getCategoryName(categoryId);
+            return productRepository.searchByCategoryAndKeyword(categoryId, safeKeywordRegex).stream()
+                    .map(product -> ProductResponse.from(product, categoryName))
+                    .collect(Collectors.toList());
+        }
+
+        return mapProducts(productRepository.searchByKeyword(safeKeywordRegex));
     }
 
     @Override
@@ -153,5 +176,11 @@ public class ProductServiceImpl implements ProductService {
         return categoryRepository.findById(categoryId)
                 .map(Category::getName)
                 .orElse("Unknown");
+    }
+
+    private List<ProductResponse> mapProducts(List<Product> products) {
+        return products.stream()
+                .map(product -> ProductResponse.from(product, getCategoryName(product.getCategoryId())))
+                .collect(Collectors.toList());
     }
 }
