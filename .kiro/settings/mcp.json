@@ -6,7 +6,7 @@
         "-y",
         "figma-developer-mcp",
         "--figma-api-key",
-        "figd_-KAZcs3wzyWvFMALDDTXxh1Qv2CNxTkJSrhYWr4R"
+        "FIGMA_TOKEN_HERE"
       ],
       "disabled": false,
       "autoApprove": []
