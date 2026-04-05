@@ -56,8 +56,8 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Create symlink without spaces
-        run: ln -s "BE/demo (1)/demo" BE/demo_clean
+      - name: Create clean build context
+        run: cp -r "BE/demo (1)/demo" BE/demo_clean
 
       - name: Build & Push Backend Image
         uses: docker/build-push-action@v5
