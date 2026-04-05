@@ -29,7 +29,7 @@ jobs:
 
       # Bước 3: Build và chạy test
       - name: Build with Maven
-        working-directory: ./BE/demo (1)/demo
+        working-directory: "./BE/demo (1)/demo"
         run: mvn clean package -DskipTests  # Build JAR, bỏ qua test (MongoDB cần connection)
         env:
           MONGO_URI: ${{ secrets.MONGO_URI }}
@@ -64,7 +64,7 @@ jobs:
       - name: Build & Push Backend Image
         uses: docker/build-push-action@v5
         with:
-          context: ./BE/demo (1)/demo
+          context: "./BE/demo (1)/demo"
           push: true
           tags: |
             nguyenhongoctruc/webbantruyen-backend:1.0
@@ -90,6 +90,6 @@ jobs:
     steps:
       - name: Deploy notification
         run: |
-          echo "Deploy thành công!"
+          echo "✅ Deploy thành công!"
           echo "Backend: https://hub.docker.com/r/nguyenhongoctruc/webbantruyen-backend"
           echo "Frontend: https://hub.docker.com/r/nguyenhongoctruc/webbantruyen-frontend"
