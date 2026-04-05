@@ -2,8 +2,8 @@ FROM eclipse-temurin:21-jre-alpine
 
 WORKDIR /app
 
-# context = ./BE, copy JAR từ subfolder
-COPY demo\ \(1\)/demo/target/*.jar app.jar
+# context = BE/demo_clean (symlink tới BE/demo (1)/demo)
+COPY target/*.jar app.jar
 
 EXPOSE 8080
 
