@@ -114,6 +114,41 @@ document.addEventListener('DOMContentLoaded', () => {
         return `${number.toLocaleString('vi-VN')} đ`;
     };
 
+    const buildProductCardsHtml = (products, emptyMessage) => {
+        if (!Array.isArray(products) || products.length === 0) {
+            return `
+                <div class="product-card">
+                    <div class="product-info">
+                        <h3 class="product-title">${escapeHtml(emptyMessage || 'Chưa có sản phẩm để hiển thị')}</h3>
+                        <p class="product-author">Vui lòng quay lại sau.</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        return products.map(product => {
+            const productName = escapeHtml(product.name || 'Sản phẩm');
+            const author = escapeHtml(product.author || 'Đang cập nhật');
+            const imageUrl = escapeHtml(product.imageUrl || 'https://placehold.co/200x250/fff/333?text=Product');
+            const detailUrl = `pages/product-detail.html?id=${encodeURIComponent(product.id || '')}`;
+
+            return `
+                <a class="product-card" href="${detailUrl}">
+                    <div class="product-image">
+                        <img src="${imageUrl}" alt="${productName}">
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">${productName}</h3>
+                        <p class="product-author">${author}</p>
+                        <div class="product-price">
+                            <span class="current-price">${formatMoney(product.price)}</span>
+                        </div>
+                    </div>
+                </a>
+            `;
+        }).join('');
+    };
+
     // Toggle menu items hoặc active states
     const navLinks = document.querySelectorAll('.nav-btn');
     
@@ -247,44 +282,37 @@ document.addEventListener('DOMContentLoaded', () => {
         const homePath = window.location.pathname.toLowerCase();
         return homePath.endsWith('/index.html') || homePath === '/' || homePath === '';
     })();
+    const isNewsListPage = path.endsWith('/news.html');
+    const isNewsDetailPage = path.endsWith('/news-detail.html');
+    const isAboutPage = path.endsWith('/about.html');
+
+    const formatNewsDate = (value, withPrefix = false) => {
+        if (!value) return withPrefix ? 'Ngày đăng: --/--/----' : '--/--/----';
+        const dateText = new Date(value).toLocaleDateString('vi-VN', {
+            weekday: 'long',
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric'
+        });
+        return withPrefix ? `Ngày đăng: ${dateText}` : dateText;
+    };
 
     const renderHomeFeaturedProducts = (products) => {
         const container = document.getElementById('homeFeaturedProducts');
         if (!container) return;
+        container.innerHTML = buildProductCardsHtml(products, 'Chưa có sản phẩm để hiển thị');
+    };
 
-        if (!Array.isArray(products) || products.length === 0) {
-            container.innerHTML = `
-                <div class="product-card">
-                    <div class="product-info">
-                        <h3 class="product-title">Chưa có sản phẩm để hiển thị</h3>
-                        <p class="product-author">Vui lòng quay lại sau.</p>
-                    </div>
-                </div>
-            `;
-            return;
-        }
+    const renderHomeMangaProducts = (products) => {
+        const container = document.getElementById('homeMangaProducts');
+        if (!container) return;
+        container.innerHTML = buildProductCardsHtml(products, 'Chưa có sản phẩm thuộc danh mục Manga');
+    };
 
-        container.innerHTML = products.map(product => {
-            const productName = escapeHtml(product.name || 'Sản phẩm');
-            const author = escapeHtml(product.author || 'Đang cập nhật');
-            const imageUrl = escapeHtml(product.imageUrl || 'https://placehold.co/200x250/fff/333?text=Product');
-            const detailUrl = `pages/product-detail.html?id=${encodeURIComponent(product.id || '')}`;
-
-            return `
-                <a class="product-card" href="${detailUrl}">
-                    <div class="product-image">
-                        <img src="${imageUrl}" alt="${productName}">
-                    </div>
-                    <div class="product-info">
-                        <h3 class="product-title">${productName}</h3>
-                        <p class="product-author">${author}</p>
-                        <div class="product-price">
-                            <span class="current-price">${formatMoney(product.price)}</span>
-                        </div>
-                    </div>
-                </a>
-            `;
-        }).join('');
+    const renderHomeMerchProducts = (products) => {
+        const container = document.getElementById('homeMerchProducts');
+        if (!container) return;
+        container.innerHTML = buildProductCardsHtml(products, 'Chưa có sản phẩm thuộc danh mục Merch');
     };
 
     const renderHomeCategories = (categories) => {
@@ -355,11 +383,260 @@ document.addEventListener('DOMContentLoaded', () => {
             renderHomeFeaturedProducts(data?.featuredProducts || []);
             renderHomeCategories(data?.categories || []);
             renderHomeLatestNews(data?.latestNews || []);
+
+            const categories = Array.isArray(data?.categories) ? data.categories : [];
+            const mangaCategory = categories.find(item => (item?.name || '').trim().toLowerCase() === 'manga');
+            if (mangaCategory?.id) {
+                const mangaProducts = await apiRequest(`/api/products?categoryId=${encodeURIComponent(mangaCategory.id)}`);
+                renderHomeMangaProducts((mangaProducts || []).slice(0, 8));
+
+                const viewMoreBtn = document.getElementById('homeMangaViewMore');
+                if (viewMoreBtn) {
+                    viewMoreBtn.setAttribute('href', `pages/products.html?categoryId=${encodeURIComponent(mangaCategory.id)}`);
+                }
+            } else {
+                renderHomeMangaProducts([]);
+            }
+
+            const merchCategory = categories.find(item => (item?.name || '').trim().toLowerCase() === 'merch');
+            if (merchCategory?.id) {
+                const merchProducts = await apiRequest(`/api/products?categoryId=${encodeURIComponent(merchCategory.id)}`);
+                renderHomeMerchProducts((merchProducts || []).slice(0, 8));
+
+                const merchViewMoreBtn = document.getElementById('homeMerchViewMore');
+                if (merchViewMoreBtn) {
+                    merchViewMoreBtn.setAttribute('href', `pages/products.html?categoryId=${encodeURIComponent(merchCategory.id)}`);
+                }
+            } else {
+                renderHomeMerchProducts([]);
+            }
         } catch (err) {
             console.error('Không thể tải dữ liệu trang chủ:', err);
         }
     };
     loadHomeData();
+
+    const loadNewsListPage = async () => {
+        if (!isNewsListPage) return;
+        const container = document.getElementById('newsListGrid');
+        if (!container) return;
+
+        try {
+            const newsItems = await apiRequest('/api/news');
+            if (!Array.isArray(newsItems) || newsItems.length === 0) {
+                container.innerHTML = `
+                    <div class="news-card">
+                        <h3 class="news-card-title">Chưa có bài viết</h3>
+                        <p class="news-card-desc">Tin tức sẽ được cập nhật sớm.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = newsItems.map(item => {
+                const title = escapeHtml(item.title || 'Tin tức');
+                const summary = escapeHtml(item.summary || 'Đang cập nhật nội dung...');
+                const thumbnail = escapeHtml(item.thumbnail || 'https://placehold.co/300x225/ffffff/9f2425?text=News');
+                const dateText = formatNewsDate(item.published_at);
+                const detailUrl = item.slug
+                    ? `news-detail.html?slug=${encodeURIComponent(item.slug)}`
+                    : `news-detail.html?id=${encodeURIComponent(item.id || '')}`;
+
+                return `
+                    <div class="news-card">
+                        <img class="news-card-img" src="${thumbnail}" alt="${title}" />
+                        <h3 class="news-card-title">${title}</h3>
+                        <p class="news-card-desc">${summary}</p>
+                        <div class="news-card-footer">
+                            <a href="${detailUrl}" class="detail-link">Chi tiết</a>
+                            <span class="news-date">${dateText}</span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        } catch (err) {
+            container.innerHTML = `
+                <div class="news-card">
+                    <h3 class="news-card-title">Không thể tải tin tức</h3>
+                    <p class="news-card-desc">${escapeHtml(err.message || 'Đã có lỗi xảy ra.')}</p>
+                </div>
+            `;
+        }
+    };
+    loadNewsListPage();
+
+    const loadNewsDetailPage = async () => {
+        if (!isNewsDetailPage) return;
+
+        const params = new URLSearchParams(window.location.search);
+        const slug = params.get('slug');
+        const id = params.get('id');
+
+        const breadcrumbTitleEl = document.getElementById('newsDetailBreadcrumbTitle');
+        const publishedAtEl = document.getElementById('newsDetailPublishedAt');
+        const thumbnailEl = document.getElementById('newsDetailThumbnail');
+        const titleEl = document.getElementById('newsDetailTitle');
+        const contentEl = document.getElementById('newsDetailContent');
+        const relatedListEl = document.getElementById('newsDetailRelatedList');
+
+        if (!titleEl || !contentEl) return;
+
+        try {
+            let detail = null;
+            if (slug) {
+                detail = await apiRequest(`/api/news/slug/${encodeURIComponent(slug)}`);
+            } else if (id) {
+                detail = await apiRequest(`/api/news/${encodeURIComponent(id)}`);
+            } else {
+                const newsItems = await apiRequest('/api/news');
+                const firstItem = Array.isArray(newsItems) ? newsItems[0] : null;
+                if (firstItem?.slug) {
+                    detail = await apiRequest(`/api/news/slug/${encodeURIComponent(firstItem.slug)}`);
+                }
+            }
+
+            if (!detail) {
+                throw new Error('Không tìm thấy nội dung bài viết');
+            }
+
+            const title = detail.title || 'Chi tiết tin tức';
+            const summary = detail.summary || '';
+
+            document.title = `Kaleidoscope - ${title}`;
+            if (breadcrumbTitleEl) breadcrumbTitleEl.textContent = title;
+            if (publishedAtEl) publishedAtEl.textContent = formatNewsDate(detail.published_at, true);
+            if (thumbnailEl) {
+                thumbnailEl.src = detail.thumbnail || 'https://placehold.co/800x450/fff/333?text=News';
+                thumbnailEl.alt = title;
+            }
+            titleEl.innerHTML = escapeHtml(title).replace(/\n/g, '<br />');
+
+            const content = detail.content || summary || 'Nội dung đang được cập nhật.';
+            const isHtmlContent = /<[^>]+>/.test(content);
+            contentEl.innerHTML = isHtmlContent ? content : `<p>${escapeHtml(content).replace(/\n/g, '<br />')}</p>`;
+
+            if (relatedListEl) {
+                const list = await apiRequest('/api/news');
+                const relatedItems = (Array.isArray(list) ? list : [])
+                    .filter(item => {
+                        if (detail.slug && item.slug) return item.slug !== detail.slug;
+                        return item.id !== detail.id;
+                    })
+                    .slice(0, 5);
+
+                relatedListEl.innerHTML = relatedItems.map(item => {
+                    const itemTitle = escapeHtml(item.title || 'Tin tức');
+                    const image = escapeHtml(item.thumbnail || 'https://placehold.co/150x110/ffffff/9f2425?text=News');
+                    const detailUrl = item.slug
+                        ? `news-detail.html?slug=${encodeURIComponent(item.slug)}`
+                        : `news-detail.html?id=${encodeURIComponent(item.id || '')}`;
+                    return `
+                        <a href="${detailUrl}" class="nd-related-item">
+                            <img src="${image}" alt="${itemTitle}" />
+                            <span class="nd-related-title">${itemTitle}</span>
+                        </a>
+                    `;
+                }).join('') || '<p>Chưa có bài viết liên quan.</p>';
+            }
+        } catch (err) {
+            if (breadcrumbTitleEl) breadcrumbTitleEl.textContent = 'Không tìm thấy bài viết';
+            if (publishedAtEl) publishedAtEl.textContent = 'Ngày đăng: --/--/----';
+            if (titleEl) titleEl.textContent = 'Không thể tải bài viết';
+            if (contentEl) {
+                contentEl.innerHTML = `<p>${escapeHtml(err.message || 'Đã xảy ra lỗi khi tải nội dung.')}</p>`;
+            }
+        }
+    };
+    loadNewsDetailPage();
+
+    const loadAboutPage = async () => {
+        if (!isAboutPage) return;
+
+        const bannerEl = document.getElementById('aboutBannerTitle');
+        const heroImgEl = document.getElementById('aboutHeroImage');
+        const gridEl = document.getElementById('aboutGridContent');
+        if (!gridEl) return;
+
+        try {
+            const about = await apiRequest('/api/about');
+            const title = about?.title || 'Về Kaleidoscope';
+            const tagline = about?.tagline || '';
+            const story = about?.story || 'Nội dung đang được cập nhật.';
+            const mission = about?.mission || 'Nội dung đang được cập nhật.';
+            const vision = about?.vision || 'Nội dung đang được cập nhật.';
+            const highlights = Array.isArray(about?.highlights) ? about.highlights : [];
+            const contactSummary = [
+                about?.email ? `Email: ${escapeHtml(about.email)}` : null,
+                about?.hotline ? `Hotline: ${escapeHtml(about.hotline)}` : null,
+                about?.address ? `Địa chỉ: ${escapeHtml(about.address)}` : null
+            ].filter(Boolean).join('<br />');
+
+            document.title = `Kaleidoscope - ${title}`;
+            if (bannerEl) bannerEl.textContent = title.toUpperCase();
+            if (heroImgEl) {
+                heroImgEl.alt = escapeHtml(title);
+            }
+
+            const highlightText = highlights.length
+                ? highlights.map(item => `• ${escapeHtml(item)}`).join('<br />')
+                : '• Đang cập nhật';
+
+            gridEl.innerHTML = `
+                <div class="about-card">
+                    <img src="https://picsum.photos/seed/kaleidoscope-story/600/400" alt="Story" class="about-card-img" />
+                    <div class="about-card-meta">
+                        <span><i class="fa-regular fa-calendar"></i> ${new Date().toLocaleDateString('vi-VN')}</span>
+                        <span><i class="fa-regular fa-user"></i> Kaleidoscope</span>
+                    </div>
+                    <div class="about-card-divider"></div>
+                    <h3 class="about-card-title">${escapeHtml(tagline || 'Câu chuyện của chúng tôi')}</h3>
+                    <p class="about-card-desc">${escapeHtml(story)}</p>
+                </div>
+
+                <div class="about-card">
+                    <img src="https://picsum.photos/seed/kaleidoscope-mission/600/400" alt="Mission" class="about-card-img" />
+                    <div class="about-card-meta">
+                        <span><i class="fa-regular fa-calendar"></i> ${new Date().toLocaleDateString('vi-VN')}</span>
+                        <span><i class="fa-regular fa-user"></i> Kaleidoscope</span>
+                    </div>
+                    <div class="about-card-divider"></div>
+                    <h3 class="about-card-title">Sứ mệnh</h3>
+                    <p class="about-card-desc">${escapeHtml(mission)}</p>
+                </div>
+
+                <div class="about-card">
+                    <img src="https://picsum.photos/seed/kaleidoscope-vision/600/400" alt="Vision" class="about-card-img" />
+                    <div class="about-card-meta">
+                        <span><i class="fa-regular fa-calendar"></i> ${new Date().toLocaleDateString('vi-VN')}</span>
+                        <span><i class="fa-regular fa-user"></i> Kaleidoscope</span>
+                    </div>
+                    <div class="about-card-divider"></div>
+                    <h3 class="about-card-title">Tầm nhìn</h3>
+                    <p class="about-card-desc">${escapeHtml(vision)}</p>
+                </div>
+
+                <div class="about-card">
+                    <img src="https://picsum.photos/seed/kaleidoscope-contact/600/400" alt="Contact" class="about-card-img" />
+                    <div class="about-card-meta">
+                        <span><i class="fa-regular fa-calendar"></i> ${new Date().toLocaleDateString('vi-VN')}</span>
+                        <span><i class="fa-regular fa-user"></i> Kaleidoscope</span>
+                    </div>
+                    <div class="about-card-divider"></div>
+                    <h3 class="about-card-title">Liên hệ & Điểm nổi bật</h3>
+                    <p class="about-card-desc">${contactSummary || 'Thông tin liên hệ đang được cập nhật.'}<br /><br />${highlightText}</p>
+                </div>
+            `;
+        } catch (err) {
+            gridEl.innerHTML = `
+                <div class="about-card">
+                    <div class="about-card-divider"></div>
+                    <h3 class="about-card-title">Không thể tải trang giới thiệu</h3>
+                    <p class="about-card-desc">${escapeHtml(err.message || 'Đã có lỗi xảy ra khi tải dữ liệu.')}</p>
+                </div>
+            `;
+        }
+    };
+    loadAboutPage();
 
     const homeSearchInput = document.querySelector('.search-bar input');
     if (homeSearchInput) {
