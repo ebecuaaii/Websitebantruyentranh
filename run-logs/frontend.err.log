@@ -1,0 +1,15 @@
+::1 - - [05/Apr/2026 14:24:49] "GET / HTTP/1.1" 200 -
+::1 - - [05/Apr/2026 14:25:12] "GET /home.html HTTP/1.1" 200 -
+::1 - - [05/Apr/2026 14:25:12] "GET /js/main.js HTTP/1.1" 200 -
+::1 - - [05/Apr/2026 14:25:12] "GET /css/style.css HTTP/1.1" 200 -
+::1 - - [05/Apr/2026 14:25:12] "GET /css/home.css HTTP/1.1" 200 -
+::1 - - [05/Apr/2026 14:25:13] code 404, message File not found
+::1 - - [05/Apr/2026 14:25:13] "GET /favicon.ico HTTP/1.1" 404 -
+::1 - - [05/Apr/2026 14:25:33] "GET /pages/cart.html HTTP/1.1" 200 -
+::1 - - [05/Apr/2026 14:25:33] "GET /js/cart.js HTTP/1.1" 200 -
+::1 - - [05/Apr/2026 14:25:33] "GET /css/cart.css HTTP/1.1" 200 -
+::1 - - [05/Apr/2026 14:25:37] "GET /index.html HTTP/1.1" 200 -
+::1 - - [05/Apr/2026 14:25:44] "GET /pages/news-detail.html?slug=top-5-sach-kinh-te-2026 HTTP/1.1" 200 -
+::1 - - [05/Apr/2026 14:25:44] "GET /css/news-detail.css HTTP/1.1" 200 -
+::1 - - [05/Apr/2026 14:27:18] "GET /index.html HTTP/1.1" 304 -
+::1 - - [05/Apr/2026 14:38:04] "GET /home.html HTTP/1.1" 200 -

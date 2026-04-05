@@ -1,7 +1,7 @@
 const BASE_URL = 'http://localhost:8080/api'
 
 function getToken() {
-    return localStorage.getItem('token')
+    return localStorage.getItem('authToken')
 }
 
 function authHeaders() {

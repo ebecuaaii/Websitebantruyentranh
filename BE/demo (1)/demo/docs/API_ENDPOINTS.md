@@ -74,6 +74,16 @@ Sample detail response format:
 - `GET /api/users/me`
 - `PUT /api/users/me`
 - `POST /api/products/{id}/reviews`
+- `POST /api/checkout/preview-coupon`
+- `POST /api/checkout`
+
+## Payment Callbacks (Public)
+- `POST /api/payments/momo/ipn`
+- `GET /api/payments/momo/return`
+- `GET /api/payments/vnpay/return`
+
+## Coupons
+- `GET /api/coupons/active`
 
 ## Admin Endpoints (ADMIN only)
 
@@ -93,6 +103,13 @@ Sample detail response format:
 - `POST /api/admin/categories`
 - `PUT /api/admin/categories/{id}`
 - `DELETE /api/admin/categories/{id}`
+
+### Coupons (CRUD)
+- `GET /api/admin/coupons`
+- `GET /api/admin/coupons/{id}`
+- `POST /api/admin/coupons`
+- `PUT /api/admin/coupons/{id}`
+- `DELETE /api/admin/coupons/{id}`
 
 ### News (CRUD)
 - `GET /api/admin/news`
@@ -117,3 +134,14 @@ Required keys:
 - `JWT_SECRET`
 - `JWT_EXPIRATION`
 - `CORS_ALLOWED_ORIGINS`
+- `CHECKOUT_RESULT_URL`
+- `MOMO_ENDPOINT`
+- `MOMO_PARTNER_CODE`
+- `MOMO_ACCESS_KEY`
+- `MOMO_SECRET_KEY`
+- `MOMO_REDIRECT_URL`
+- `MOMO_IPN_URL`
+- `VNPAY_PAY_URL`
+- `VNPAY_TMN_CODE`
+- `VNPAY_HASH_SECRET`
+- `VNPAY_RETURN_URL`

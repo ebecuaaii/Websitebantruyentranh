@@ -7,6 +7,7 @@ import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface OrderRepository extends MongoRepository<Order, String> {
@@ -19,4 +20,6 @@ public interface OrderRepository extends MongoRepository<Order, String> {
 
     @Query("{ 'status': 'DELIVERED', 'createdAt': { $gte: ?0, $lte: ?1 } }")
     List<Order> findDeliveredOrdersBetween(LocalDateTime from, LocalDateTime to);
+
+    Optional<Order> findByPaymentTxnRef(String paymentTxnRef);
 }

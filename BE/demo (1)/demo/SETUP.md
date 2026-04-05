@@ -22,7 +22,7 @@ cp .env.example .env
 ### Bước 2: Điền giá trị thật vào `.env`
 Ví dụ:
 ```env
-MONGO_URI=mongodb+srv://<username>:<password>@webbantruyen.2amdk17.mongodb.net/?retryWrites=true&w=majority&appName=webbantruyen
+MONGO_URI=mongodb+srv://<username>:<password>@<cluster>.mongodb.net/?retryWrites=true&w=majority&appName=<appName>
 MONGO_DB=comic_store
 SERVER_PORT=8080
 JWT_SECRET=your-secret-key
