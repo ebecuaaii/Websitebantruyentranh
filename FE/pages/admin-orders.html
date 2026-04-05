@@ -103,15 +103,15 @@
 
         <div class="table-controls">
           <div class="filter-group">
-            <select class="form-control">
-              <option>Tất cả trạng thái</option>
-              <option>Chờ xác nhận</option>
-              <option>Đã xác nhận</option>
-              <option>Đang giao</option>
-              <option>Đã giao</option>
-              <option>Hủy</option>
+            <select class="form-control" id="statusFilter">
+              <option value="">Tất cả trạng thái</option>
+              <option value="PENDING">Chờ xác nhận</option>
+              <option value="CONFIRMED">Đã xác nhận</option>
+              <option value="SHIPPING">Đang giao</option>
+              <option value="COMPLETED">Đã giao</option>
+              <option value="CANCELLED">Hủy</option>
             </select>
-            <input type="date" class="form-control" />
+            <input type="date" class="form-control" id="dateFilter" />
           </div>
         </div>
 
@@ -130,111 +130,26 @@
                 <th>Hành động</th>
               </tr>
             </thead>
-            <tbody>
-              <tr>
-                <td><input type="checkbox" /></td>
-                <td><span class="order-code">SPX11111222</span></td>
-                <td>Nguyễn Hồ Ngọc Trúc</td>
-                <td>1.500.000 đ</td>
-                <td>26/01/2026</td>
-                <td><span class="status-badge pending">Chờ xác nhận</span></td>
-                <td>
-                  <div class="action-buttons">
-                    <a href="admin-order-detail.html?id=1" class="btn-icon" title="Chi tiết">
-                      <i class="fas fa-eye"></i>
-                    </a>
-                    <button class="btn-icon" title="Cập nhật">
-                      <i class="fas fa-edit"></i>
-                    </button>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td><input type="checkbox" /></td>
-                <td><span class="order-code">SPX11111221</span></td>
-                <td>Trần Văn B</td>
-                <td>2.250.000 đ</td>
-                <td>25/01/2026</td>
-                <td><span class="status-badge shipping">Đang giao</span></td>
-                <td>
-                  <div class="action-buttons">
-                    <a href="admin-order-detail.html?id=2" class="btn-icon" title="Chi tiết">
-                      <i class="fas fa-eye"></i>
-                    </a>
-                    <button class="btn-icon" title="Cập nhật">
-                      <i class="fas fa-edit"></i>
-                    </button>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td><input type="checkbox" /></td>
-                <td><span class="order-code">SPX11111220</span></td>
-                <td>Phạm Thị C</td>
-                <td>975.000 đ</td>
-                <td>24/01/2026</td>
-                <td><span class="status-badge completed">Đã giao</span></td>
-                <td>
-                  <div class="action-buttons">
-                    <a href="admin-order-detail.html?id=3" class="btn-icon" title="Chi tiết">
-                      <i class="fas fa-eye"></i>
-                    </a>
-                    <button class="btn-icon" title="Cập nhật">
-                      <i class="fas fa-edit"></i>
-                    </button>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td><input type="checkbox" /></td>
-                <td><span class="order-code">SPX11111219</span></td>
-                <td>Lê Thanh D</td>
-                <td>1.800.000 đ</td>
-                <td>23/01/2026</td>
-                <td><span class="status-badge completed">Đã giao</span></td>
-                <td>
-                  <div class="action-buttons">
-                    <a href="admin-order-detail.html?id=4" class="btn-icon" title="Chi tiết">
-                      <i class="fas fa-eye"></i>
-                    </a>
-                    <button class="btn-icon" title="Cập nhật">
-                      <i class="fas fa-edit"></i>
-                    </button>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td><input type="checkbox" /></td>
-                <td><span class="order-code">SPX11111218</span></td>
-                <td>Ngô Minh E</td>
-                <td>650.000 đ</td>
-                <td>22/01/2026</td>
-                <td><span class="status-badge cancelled">Hủy</span></td>
-                <td>
-                  <div class="action-buttons">
-                    <a href="admin-order-detail.html?id=5" class="btn-icon" title="Chi tiết">
-                      <i class="fas fa-eye"></i>
-                    </a>
-                    <button class="btn-icon" title="Cập nhật">
-                      <i class="fas fa-edit"></i>
-                    </button>
-                  </div>
-                </td>
-              </tr>
+            <tbody id="orderTableBody">
+              <!-- Orders will be loaded here via JS -->
+              <tr><td colspan="7" style="text-align:center">Đang tải dữ liệu...</td></tr>
             </tbody>
           </table>
         </div>
 
-        <div class="pagination">
-          <button class="btn-paging" disabled>
-            <i class="fas fa-chevron-left"></i>
-          </button>
-          <button class="btn-paging active">1</button>
-          <button class="btn-paging">2</button>
-          <button class="btn-paging">3</button>
-          <button class="btn-paging">
-            <i class="fas fa-chevron-right"></i>
-          </button>
+        <div class="pagination" id="paginationContainer">
+          <!-- Pagination buttons will be loaded here via JS -->
+        </div>
+
+        <!-- Order Detail Modal -->
+        <div id="orderDetailModal" class="admin-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:1000; align-items:center; justify-content:center;">
+          <div class="modal-content" style="background:#fff; padding:30px; border-radius:8px; max-width:800px; width:90%; max-height:90vh; overflow-y:auto; position:relative;">
+            <span class="close-modal" style="position:absolute; top:15px; right:20px; font-size:24px; cursor:pointer;">&times;</span>
+            <h3>Chi tiết đơn hàng</h3>
+            <div id="orderDetailContent">
+              <!-- Detail will be loaded here -->
+            </div>
+          </div>
         </div>
       </main>
     </div>

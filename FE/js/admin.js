@@ -128,6 +128,206 @@ document.addEventListener('DOMContentLoaded', () => {
     setupImageUpload();
     setupMultipleImageUpload();
 
+    // ─── QUẢN LÝ ĐƠN HÀNG (admin-orders.html) ───
+    if (currentPath.includes('admin-orders.html')) {
+        let allOrders = [];
+        let filteredOrders = [];
+        const itemsPerPage = 10;
+        let currentPage = 1;
+
+        const statusMap = {
+            'PENDING': { text: 'Chờ xác nhận', class: 'pending' },
+            'CONFIRMED': { text: 'Đã xác nhận', class: 'confirmed' },
+            'SHIPPING': { text: 'Đang giao', class: 'shipping' },
+            'COMPLETED': { text: 'Đã giao', class: 'completed' },
+            'CANCELLED': { text: 'Hủy', class: 'cancelled' }
+        };
+
+        const renderTable = (page) => {
+            const tbody = document.getElementById('orderTableBody');
+            if (!tbody) return;
+            tbody.innerHTML = '';
+
+            const start = (page - 1) * itemsPerPage;
+            const end = start + itemsPerPage;
+            const pageOrders = filteredOrders.slice(start, end);
+
+            if (pageOrders.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7" style="text-align:center">Không tìm thấy đơn hàng nào.</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = pageOrders.map(o => `
+                <tr>
+                    <td><input type="checkbox" /></td>
+                    <td><span class="order-code">${o.orderCode || o.id.substring(0, 10)}</span></td>
+                    <td>${o.userName || 'N/A'}</td>
+                    <td>${(o.totalAmount || 0).toLocaleString('vi-VN')} đ</td>
+                    <td>${o.createdAt ? new Date(o.createdAt).toLocaleDateString('vi-VN') : 'N/A'}</td>
+                    <td><span class="status-badge ${statusMap[o.status]?.class || ''}">${statusMap[o.status]?.text || o.status}</span></td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="btn-icon btn-view-o" data-id="${o.id}" title="Chi tiết"><i class="fas fa-eye"></i></button>
+                            <button class="btn-icon btn-edit-o" data-id="${o.id}" data-status="${o.status}" title="Cập nhật"><i class="fas fa-edit"></i></button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+
+            // Bind Actions
+            document.querySelectorAll('.btn-view-o').forEach(btn => btn.onclick = () => viewOrderDetail(btn.dataset.id));
+            document.querySelectorAll('.btn-edit-o').forEach(btn => btn.onclick = () => showStatusUpdate(btn.dataset.id, btn.dataset.status));
+            
+            renderPagination();
+        };
+
+        const renderPagination = () => {
+            const container = document.getElementById('paginationContainer');
+            if (!container) return;
+            const totalPages = Math.ceil(filteredOrders.length / itemsPerPage);
+            container.innerHTML = '';
+
+            if (totalPages <= 1) return;
+
+            const prevBtn = document.createElement('button');
+            prevBtn.className = 'btn-paging';
+            prevBtn.disabled = currentPage === 1;
+            prevBtn.innerHTML = '<i class="fas fa-chevron-left"></i>';
+            prevBtn.onclick = () => { currentPage--; renderTable(currentPage); };
+            container.appendChild(prevBtn);
+
+            for (let i = 1; i <= totalPages; i++) {
+                const btn = document.createElement('button');
+                btn.className = `btn-paging ${i === currentPage ? 'active' : ''}`;
+                btn.textContent = i;
+                btn.onclick = () => { currentPage = i; renderTable(currentPage); };
+                container.appendChild(btn);
+            }
+
+            const nextBtn = document.createElement('button');
+            nextBtn.className = 'btn-paging';
+            nextBtn.disabled = currentPage === totalPages;
+            nextBtn.innerHTML = '<i class="fas fa-chevron-right"></i>';
+            nextBtn.onclick = () => { currentPage++; renderTable(currentPage); };
+            container.appendChild(nextBtn);
+        };
+
+        const applyFilters = () => {
+            const status = document.getElementById('statusFilter').value;
+            const date = document.getElementById('dateFilter').value;
+
+            filteredOrders = allOrders.filter(o => {
+                let match = true;
+                if (status && o.status !== status) match = false;
+                if (date) {
+                    const oDate = new Date(o.createdAt).toISOString().split('T')[0];
+                    if (oDate !== date) match = false;
+                }
+                return match;
+            });
+
+            currentPage = 1;
+            renderTable(currentPage);
+        };
+
+        const loadOrders = async () => {
+            try {
+                allOrders = await adminRequest('/api/admin/orders');
+                // Sắp xếp đơn hàng mới nhất lên đầu
+                allOrders.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+                applyFilters();
+            } catch (err) {
+                console.error("Lỗi khi tải đơn hàng:", err);
+            }
+        };
+
+        // Modal Logic
+        const modal = document.getElementById('orderDetailModal');
+        const closeModal = modal?.querySelector('.close-modal');
+        const detailContent = document.getElementById('orderDetailContent');
+
+        if (closeModal) {
+            closeModal.onclick = () => { modal.style.display = 'none'; };
+            window.onclick = (e) => { if (e.target === modal) modal.style.display = 'none'; };
+        }
+
+        const viewOrderDetail = async (id) => {
+            try {
+                const o = await adminRequest(`/api/admin/orders/${id}`);
+                if (!modal || !detailContent) return;
+                
+                detailContent.innerHTML = `
+                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px; border-bottom: 1px solid #eee; padding-bottom: 20px;">
+                        <div>
+                            <p><strong>Mã đơn hàng:</strong> ${o.orderCode || o.id}</p>
+                            <p><strong>Khách hàng:</strong> ${o.fullName || o.userName}</p>
+                            <p><strong>Số điện thoại:</strong> ${o.phone || 'N/A'}</p>
+                            <p><strong>Ngày đặt:</strong> ${new Date(o.createdAt).toLocaleString('vi-VN')}</p>
+                        </div>
+                        <div>
+                            <p><strong>Địa chỉ nhận hàng:</strong><br>${o.address || 'N/A'}</p>
+                            <p><strong>Trạng thái:</strong> <span class="status-badge ${statusMap[o.status]?.class}">${statusMap[o.status]?.text}</span></p>
+                            <p><strong>Ghi chú:</strong> ${o.note || 'Không có'}</p>
+                        </div>
+                    </div>
+                    <div style="margin-top: 20px;">
+                        <h4>Sản phẩm đã đặt</h4>
+                        <table style="width:100%; border-collapse: collapse; margin-top: 10px;">
+                            <thead>
+                                <tr style="border-bottom: 2px solid #eee; text-align: left;">
+                                    <th style="padding: 10px;">Sản phẩm</th>
+                                    <th style="padding: 10px;">Số lượng</th>
+                                    <th style="padding: 10px;">Đơn giá</th>
+                                    <th style="padding: 10px;">Thành tiền</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${(o.items || []).map(item => `
+                                    <tr style="border-bottom: 1px solid #eee;">
+                                        <td style="padding: 10px; display: flex; align-items: center; gap: 10px;">
+                                            <img src="${item.imageUrl || 'https://placehold.co/40x50'}" style="width:40px; height:50px; object-fit: cover;" />
+                                            <span>${item.productName}</span>
+                                        </td>
+                                        <td style="padding: 10px;">${item.quantity}</td>
+                                        <td style="padding: 10px;">${(item.price || 0).toLocaleString('vi-VN')} đ</td>
+                                        <td style="padding: 10px;">${(item.subtotal || 0).toLocaleString('vi-VN')} đ</td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                        <div style="text-align: right; margin-top: 20px; font-size: 18px;">
+                            <strong>Tổng cộng: <span style="color: #9f2425">${(o.totalAmount || 0).toLocaleString('vi-VN')} đ</span></strong>
+                        </div>
+                    </div>
+                `;
+                modal.style.display = 'flex';
+            } catch (err) { alert("Lỗi chi tiết: " + err.message); }
+        };
+
+        const showStatusUpdate = (id, currentStatus) => {
+            const nextStatus = prompt(`Cập nhật trạng thái đơn hàng?\n(PENDING, CONFIRMED, SHIPPING, COMPLETED, CANCELLED)`, currentStatus);
+            if (nextStatus && nextStatus.toUpperCase() !== currentStatus) {
+                updateAdminOrderStatus(id, nextStatus.toUpperCase());
+            }
+        };
+
+        const updateAdminOrderStatus = async (id, status) => {
+            try {
+                await adminRequest(`/api/admin/orders/${id}/status`, {
+                    method: 'PUT',
+                    body: JSON.stringify({ status })
+                });
+                alert('Cập nhật trạng thái thành công!');
+                loadOrders();
+            } catch (err) { alert("Lỗi cập nhật: " + err.message); }
+        };
+
+        document.getElementById('statusFilter')?.addEventListener('change', applyFilters);
+        document.getElementById('dateFilter')?.addEventListener('change', applyFilters);
+
+        loadOrders();
+    }
+
     // ─── QUẢN LÝ SẢN PHẨM (admin-products.html) ───
     if (currentPath.includes('admin-products.html')) {
         const loadProducts = async () => {
@@ -209,22 +409,127 @@ document.addEventListener('DOMContentLoaded', () => {
         loadCategories();
     }
 
+    // ─── QUẢN LÝ TÀI KHOẢN (admin-users.html) ───
+    if (currentPath.includes('admin-users.html')) {
+        let allUsers = [];
+        const itemsPerPage = 8;
+        let currentPage = 1;
+
+        const renderTable = (page) => {
+            const tbody = document.getElementById('adminUserTableBody');
+            if (!tbody) return;
+            tbody.innerHTML = '';
+
+            const start = (page - 1) * itemsPerPage;
+            const end = start + itemsPerPage;
+            const pageUsers = allUsers.slice(start, end);
+
+            if (pageUsers.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7" style="text-align:center">Không tìm thấy tài khoản nào.</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = pageUsers.map(u => `
+                <tr>
+                    <td>${u.username}</td>
+                    <td>${u.role}</td>
+                    <td>${u.phone || '-'}</td>
+                    <td>${u.email}</td>
+                    <td>${u.createdAt ? new Date(u.createdAt).toLocaleDateString('vi-VN') : '29/3/2026'}</td>
+                    <td><span class="status-badge ${u.enabled ? 'active' : 'inactive'}">${u.enabled ? 'Hoạt động' : 'Tạm khóa'}</span></td>
+                    <td>
+                        <div class="action-buttons">
+                            <a href="admin-user-add.html?id=${u.id}" class="btn-icon" title="Sửa"><i class="fas fa-edit"></i></a>
+                            <button class="btn-icon danger btn-del-u" data-id="${u.id}" title="Xóa"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+
+            document.querySelectorAll('.btn-del-u').forEach(btn => {
+                btn.onclick = async () => {
+                    if (confirm(`Xóa tài khoản ID: ${btn.dataset.id}?`)) {
+                        try {
+                            await adminRequest(`/api/admin/users/${btn.dataset.id}`, { method: 'DELETE' });
+                            alert('Đã xóa!');
+                            loadUsers();
+                        } catch (err) { alert(err.message); }
+                    }
+                };
+            });
+            renderPagination();
+        };
+
+        const renderPagination = () => {
+            const container = document.getElementById('adminUserPagination');
+            if (!container) return;
+            const totalPages = Math.ceil(allUsers.length / itemsPerPage);
+            container.innerHTML = '';
+
+            if (totalPages <= 1) return;
+
+            const prevBtn = document.createElement('button');
+            prevBtn.className = 'btn-paging';
+            prevBtn.disabled = currentPage === 1;
+            prevBtn.innerHTML = '<i class="fas fa-chevron-left"></i>';
+            prevBtn.onclick = () => { currentPage--; renderTable(currentPage); };
+            container.appendChild(prevBtn);
+
+            for (let i = 1; i <= totalPages; i++) {
+                const btn = document.createElement('button');
+                btn.className = `btn-paging ${i === currentPage ? 'active' : ''}`;
+                btn.textContent = i;
+                btn.onclick = () => { currentPage = i; renderTable(currentPage); };
+                container.appendChild(btn);
+            }
+
+            const nextBtn = document.createElement('button');
+            nextBtn.className = 'btn-paging';
+            nextBtn.disabled = currentPage === totalPages;
+            nextBtn.innerHTML = '<i class="fas fa-chevron-right"></i>';
+            nextBtn.onclick = () => { currentPage++; renderTable(currentPage); };
+            container.appendChild(nextBtn);
+        };
+
+        const loadUsers = async () => {
+            try {
+                allUsers = await adminRequest('/api/admin/users');
+                renderTable(currentPage);
+            } catch (err) {
+                console.error("Lỗi khi tải người dùng:", err);
+            }
+        };
+
+        loadUsers();
+    }
+
     // ─── FORM XỬ LÝ (ADD/EDIT) ───
     const adminForm = document.querySelector('.admin-form');
     if (adminForm) {
         const urlParams = new URLSearchParams(window.location.search);
         const editId = urlParams.get('id');
         const isProduct = currentPath.includes('product');
+        const isUser = currentPath.includes('user');
+        const isCategory = currentPath.includes('category');
+
+        if (editId && isUser) {
+            document.getElementById('pageTitle').textContent = 'Chỉnh sửa tài khoản';
+        }
 
         // Điền dữ liệu cho Form Edit
         if (editId) {
-            const path = isProduct ? `/api/products/${editId}` : `/api/categories/${editId}`;
+            let path = '';
+            if (isProduct) path = `/api/products/${editId}`;
+            else if (isCategory) path = `/api/categories/${editId}`;
+            else if (isUser) path = `/api/admin/users/${editId}`;
+
             adminRequest(path).then(data => {
                 if (!data) return;
                 Object.keys(data).forEach(key => {
                     const input = adminForm.querySelector(`[name="${key}"]`);
                     if (input) {
                         if (input.type === 'checkbox') input.checked = data[key];
+                        else if (input.name === 'password') input.value = ''; // Don't show password
                         else input.value = data[key];
                         
                         // Chạy preview cho ảnh nếu là URL field
@@ -237,10 +542,16 @@ document.addEventListener('DOMContentLoaded', () => {
             }).catch(err => console.error("Nạp dữ liệu cũ lỗi:", err));
         }
 
-        adminForm.addEventListener('submit', async (e) => {
+            adminForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             const formData = new FormData(adminForm);
             const payload = Object.fromEntries(formData.entries());
+
+            // Handle checkbox for boolean values
+            const checkboxes = adminForm.querySelectorAll('input[type="checkbox"]');
+            checkboxes.forEach(cb => {
+                payload[cb.name] = cb.checked;
+            });
 
             // Chuyển kiểu số cho các trường Backend mong đợi kiểu double/int
             if (isProduct) {
@@ -248,7 +559,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 payload.quantity = parseInt(payload.quantity || 0);
             }
 
-            const baseUrl = isProduct ? '/api/admin/products' : '/api/admin/categories';
+            let baseUrl = '';
+            if (isProduct) baseUrl = '/api/admin/products';
+            else if (isCategory) baseUrl = '/api/admin/categories';
+            else if (isUser) baseUrl = '/api/admin/users';
+
             const url = editId ? `${baseUrl}/${editId}` : baseUrl;
             const method = editId ? 'PUT' : 'POST';
 
@@ -258,7 +573,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     body: JSON.stringify(payload)
                 });
                 alert('Dữ liệu đã được lưu thành công!');
-                window.location.href = isProduct ? 'admin-products.html' : 'admin-categories.html';
+                let redirect = '';
+                if (isProduct) redirect = 'admin-products.html';
+                else if (isCategory) redirect = 'admin-categories.html';
+                else if (isUser) redirect = 'admin-users.html';
+                window.location.href = redirect;
             } catch (err) {
                 alert('Lỗi khi lưu: ' + err.message);
             }

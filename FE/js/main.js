@@ -180,7 +180,19 @@ document.addEventListener('DOMContentLoaded', () => {
         cart: 'cartCount',
         favorite: 'favoriteCount'
     };
-    const updateBadges = () => {
+    window.updateBadges = async () => {
+        // Sync with BE if needed
+        if (getToken()) {
+            try {
+                const data = await apiRequest('/api/cart');
+                const itemsCount = (data.items || []).reduce((acc, item) => acc + item.quantity, 0);
+                localStorage.setItem('cartCount', itemsCount);
+                
+                const wishlistData = await apiRequest('/api/wishlist');
+                localStorage.setItem('favoriteCount', (wishlistData.products || []).length);
+            } catch (err) { }
+        }
+
         document.querySelectorAll('[data-badge]').forEach(item => {
             const type = item.dataset.badge;
             const key = badgeMap[type];
@@ -196,9 +208,43 @@ document.addEventListener('DOMContentLoaded', () => {
                 badge.classList.add('hidden');
                 item.classList.remove('has-badge');
             }
+            
+            // Add click listener for navigation if not already a link
+            if (!item.querySelector('a')) {
+                item.style.cursor = 'pointer';
+                const link = item.dataset.link;
+                if (link) {
+                   item.onclick = () => window.location.href = link;
+                } else {
+                    item.onclick = () => {
+                        const inPages = window.location.pathname.includes('/pages/');
+                        const base = inPages ? '' : 'pages/';
+                        if (type === 'cart') window.location.href = `${base}cart.html`;
+                        if (type === 'favorite') window.location.href = `${base}wishlist.html`;
+                    };
+                }
+            }
         });
     };
     updateBadges();
+
+    window.addToCart = async (productId, quantity = 1) => {
+        if (!getToken()) {
+            const inPages = window.location.pathname.includes('/pages/');
+            window.location.href = inPages ? 'login.html' : 'pages/login.html';
+            return;
+        }
+        try {
+            await apiRequest('/api/cart', {
+                method: 'POST',
+                body: JSON.stringify({ productId, quantity })
+            });
+            alert('Đã thêm sản phẩm vào giỏ hàng');
+            updateBadges();
+        } catch (err) {
+            alert(err.message || 'Thêm vào giỏ hàng thất bại');
+        }
+    };
 
     const updateHeaderUserName = () => {
         const storedUser = JSON.parse(localStorage.getItem('authUser') || '{}');
@@ -614,6 +660,8 @@ document.addEventListener('DOMContentLoaded', () => {
     if (pagePath.endsWith('product-detail.html')) {
         const urlParams = new URLSearchParams(window.location.search);
         const productId = urlParams.get('id');
+        const pdWishlistHeart = document.querySelector('.pd-wishlist');
+
         if (productId) {
             fetchProductById(productId).then(product => {
                 if (product) {
@@ -626,6 +674,59 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (priceEl) priceEl.textContent = (product.price || 0).toLocaleString('vi-VN') + ' đ';
                     if (imgEl) imgEl.src = product.imageUrl || '';
                     if (descEl) descEl.textContent = product.description || '';
+                }
+            });
+
+            // Check if product is in wishlist
+            if (getToken()) {
+                apiRequest('/api/wishlist').then(data => {
+                    const products = data.products || [];
+                    const isInWishlist = products.some(p => p.id === productId);
+                    if (isInWishlist && pdWishlistHeart) {
+                        pdWishlistHeart.classList.remove('fa-regular');
+                        pdWishlistHeart.classList.add('fa-solid', 'active');
+                    }
+                    localStorage.setItem('favoriteCount', products.length);
+                    updateBadges();
+                }).catch(() => { });
+            }
+
+            // Add to Cart handler
+            const btnAddCart = document.querySelector('.btn-add-cart');
+            const qtyInputDetail = document.querySelector('.qty-input');
+            if (btnAddCart && qtyInputDetail) {
+                btnAddCart.onclick = (e) => {
+                    e.preventDefault();
+                    const qty = parseInt(qtyInputDetail.value) || 1;
+                    window.addToCart(productId, qty);
+                };
+            }
+        }
+
+        if (pdWishlistHeart && productId) {
+            pdWishlistHeart.addEventListener('click', async () => {
+                if (!getToken()) {
+                    window.location.href = 'login.html';
+                    return;
+                }
+
+                const isActive = pdWishlistHeart.classList.contains('active');
+                try {
+                    if (isActive) {
+                        await apiRequest(`/api/wishlist/${productId}`, { method: 'DELETE' });
+                        pdWishlistHeart.classList.remove('fa-solid', 'active');
+                        pdWishlistHeart.classList.add('fa-regular');
+                    } else {
+                        await apiRequest(`/api/wishlist/${productId}`, { method: 'POST' });
+                        pdWishlistHeart.classList.remove('fa-regular');
+                        pdWishlistHeart.classList.add('fa-solid', 'active');
+                    }
+                    // Cập nhật badge
+                    const data = await apiRequest('/api/wishlist');
+                    localStorage.setItem('favoriteCount', (data.products || []).length);
+                    updateBadges();
+                } catch (err) {
+                    alert(err.message || 'Thao tác thất bại');
                 }
             });
         }
