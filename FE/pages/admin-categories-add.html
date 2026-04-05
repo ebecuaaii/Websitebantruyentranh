@@ -19,14 +19,7 @@
     <aside class="admin-sidebar">
       <div class="sidebar-header">
         <div class="logo">
-          <img
-<<<<<<< HEAD
-            src="../images/logo.png"
-=======
-            src="../assets/logo.png"
->>>>>>> 3939cc3c5be9cf8a79f151f5fe208841549020d2
-            alt="Logo"
-          />
+          <img src="../images/logo.png" alt="Logo" />
           <span>Kaleidoscope</span>
         </div>
       </div>
@@ -111,20 +104,36 @@
           <div class="form-container">
             <div class="form-section">
               <h3>Thông tin danh mục</h3>
-              
+
               <div class="form-group">
                 <label>Tên danh mục</label>
-                <input type="text" name="name" class="form-control" placeholder="Nhập tên danh mục..." required />
+                <input
+                  type="text"
+                  name="name"
+                  class="form-control"
+                  placeholder="Nhập tên danh mục..."
+                  required
+                />
               </div>
 
               <div class="form-group">
                 <label>Biểu tượng (Icon)</label>
-                <input type="text" name="icon" class="form-control" placeholder="Nhập tên icon (ví dụ: fas fa-book)..." />
+                <input
+                  type="text"
+                  name="icon"
+                  class="form-control"
+                  placeholder="Nhập tên icon (ví dụ: fas fa-book)..."
+                />
               </div>
 
               <div class="form-group">
                 <label>Mô tả</label>
-                <textarea name="description" class="form-control" rows="4" placeholder="Mô tả chi tiết về danh mục..."></textarea>
+                <textarea
+                  name="description"
+                  class="form-control"
+                  rows="4"
+                  placeholder="Mô tả chi tiết về danh mục..."
+                ></textarea>
               </div>
 
               <div class="form-group">
@@ -138,21 +147,54 @@
 
             <div class="form-section">
               <h3>Hình ảnh danh mục</h3>
-              
+
               <div class="form-group">
                 <label>URL Hình ảnh (Thumbnail)</label>
                 <div class="image-upload-wrapper">
-                  <input type="text" name="thumbnailUrl" class="form-control" placeholder="Dán URL hoặc chọn file phía dưới..." />
-                  
-                  <div class="file-select-area" style="margin-top: 10px;">
-                    <label class="btn btn-secondary-outline" style="cursor: pointer; display: inline-block; padding: 8px 15px; border: 1px solid #ccc; border-radius: 5px;">
+                  <input
+                    type="text"
+                    name="thumbnailUrl"
+                    class="form-control"
+                    placeholder="Dán URL hoặc chọn file phía dưới..."
+                  />
+
+                  <div class="file-select-area" style="margin-top: 10px">
+                    <label
+                      class="btn btn-secondary-outline"
+                      style="
+                        cursor: pointer;
+                        display: inline-block;
+                        padding: 8px 15px;
+                        border: 1px solid #ccc;
+                        border-radius: 5px;
+                      "
+                    >
                       <i class="fas fa-upload"></i> Chọn ảnh từ máy tính
-                      <input type="file" class="image-picker hide" accept="image/*" style="display:none;" />
+                      <input
+                        type="file"
+                        class="image-picker hide"
+                        accept="image/*"
+                        style="display: none"
+                      />
                     </label>
                   </div>
 
-                  <div class="preview-container" style="margin-top: 15px; border: 1px dashed #ddd; padding: 10px; text-align: center;">
-                    <img src="https://placehold.co/300x200?text=Preview" alt="Category Preview" class="preview-image" style="max-height: 200px; border-radius: 8px;" id="catPreview" />
+                  <div
+                    class="preview-container"
+                    style="
+                      margin-top: 15px;
+                      border: 1px dashed #ddd;
+                      padding: 10px;
+                      text-align: center;
+                    "
+                  >
+                    <img
+                      src="https://placehold.co/300x200?text=Preview"
+                      alt="Category Preview"
+                      class="preview-image"
+                      style="max-height: 200px; border-radius: 8px"
+                      id="catPreview"
+                    />
                   </div>
                 </div>
               </div>
@@ -160,20 +202,32 @@
 
             <div class="form-section">
               <h3>SEO</h3>
-              
+
               <div class="form-group">
                 <label>Meta Title</label>
-                <input type="text" class="form-control" placeholder="Meta title cho SEO..." />
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Meta title cho SEO..."
+                />
               </div>
 
               <div class="form-group">
                 <label>Meta Description</label>
-                <textarea class="form-control" rows="3" placeholder="Meta description cho SEO..."></textarea>
+                <textarea
+                  class="form-control"
+                  rows="3"
+                  placeholder="Meta description cho SEO..."
+                ></textarea>
               </div>
 
               <div class="form-group">
                 <label>Meta Keywords</label>
-                <input type="text" class="form-control" placeholder="Từ khóa SEO (cách nhau bằng dấu phẩy)..." />
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Từ khóa SEO (cách nhau bằng dấu phẩy)..."
+                />
               </div>
             </div>
 
