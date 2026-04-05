@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sản Phẩm Yêu Thích - Kaleidoscope</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../css/style.css" />
+    <link rel="stylesheet" href="../css/wishlist.css" />
+  </head>
+  <body>
+    <!-- Top Bar -->
+    <div class="top-bar">
+      <div class="container top-bar-inner">
+        <div class="top-bar-left">
+          <div class="social-icons">
+            <a href="#" class="fb"><i class="fa-brands fa-facebook-f"></i></a>
+            <a href="#" class="ig"><i class="fa-brands fa-instagram"></i></a>
+            <a href="#" class="zalo"
+              ><i class="fa-solid fa-comment-dots"></i
+            ></a>
+          </div>
+          <span class="about-link">Về Kaleidoscope</span>
+        </div>
+        <div class="top-bar-right">
+          <i class="fa-solid fa-phone"></i>
+          <span>Contact: (+84) 97 182 50 26</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Header -->
+    <header class="main-header">
+      <div class="container header-inner">
+        <div class="logo">
+          <img
+            src="https://placehold.co/100x100/ffffff/9f2425?text=Logo"
+            alt="Kaleidoscope Logo"
+          />
+          <span class="logo-text">Kaleidoscope</span>
+        </div>
+
+        <div class="search-bar">
+          <i class="fa-solid fa-magnifying-glass search-icon"></i>
+          <input type="text" placeholder="Tìm kiếm truyện hoặc tác giả..." />
+        </div>
+
+        <div class="header-actions">
+          <div class="action-item has-badge">
+            <span class="action-badge hidden"></span>
+            <i class="fa-solid fa-cart-shopping"></i>
+            <span><a href="cart.html">Giỏ hàng</a></span>
+          </div>
+          <div class="action-item">
+            <i class="fa-solid fa-heart"></i>
+            <span><a href="wishlist.html">Yêu thích</a></span>
+          </div>
+          <div class="action-item">
+            <i class="fa-solid fa-user"></i>
+            <span><a href="profile.html">Tài khoản</a></span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="nav-menu">
+      <div class="container">
+        <a href="../home.html" class="nav-link">TẤT CẢ SẢN PHẨM</a>
+        <a href="#" class="nav-link">TRUYỆN MỚI</a>
+        <a href="#" class="nav-link">DỊCH TRUYỆN</a>
+      </div>
+    </nav>
+
+    <!-- Breadcrumb -->
+    <div class="breadcrumb">
+      <div class="container">
+        <a href="../home.html">Trang chủ</a>
+        <span>/</span>
+        <span>Sản phẩm yêu thích</span>
+      </div>
+    </div>
+
+    <!-- Wishlist Section -->
+    <section class="wishlist-section">
+      <div class="container">
+        <h1 class="page-title">SẢN PHẨM YÊU THÍCH</h1>
+
+        <div class="wishlist-controls">
+          <p class="wishlist-count">
+            Bạn có <span class="count">4</span> sản phẩm yêu thích
+          </p>
+          <button class="btn-move-all">Thêm tất cả vào giỏ hàng</button>
+        </div>
+
+        <div class="wishlist-products">
+          <!-- Product 1 -->
+          <div class="wishlist-item">
+            <button class="btn-remove-wishlist" title="Xóa khỏi yêu thích">
+              <i class="fas fa-times"></i>
+            </button>
+            <div class="product-image">
+              <img src="https://placehold.co/180x220" alt="Product" />
+            </div>
+            <div class="product-info">
+              <h3 class="product-name">Spy X Family - Tập 13</h3>
+              <p class="product-author">Tatsuya Endo</p>
+              <div class="product-rating">
+                <span class="stars">⭐⭐⭐⭐⭐</span>
+                <span class="review-count">(45 đánh giá)</span>
+              </div>
+              <div class="product-price-section">
+                <span class="price-original">273,000 đ</span>
+                <span class="price-current">218,400 đ</span>
+                <span class="discount-badge">-20%</span>
+              </div>
+              <button class="btn-add-cart">Thêm vào giỏ hàng</button>
+            </div>
+          </div>
+
+          <!-- Product 2 -->
+          <div class="wishlist-item">
+            <button class="btn-remove-wishlist" title="Xóa khỏi yêu thích">
+              <i class="fas fa-times"></i>
+            </button>
+            <div class="product-image">
+              <img src="https://placehold.co/180x220" alt="Product" />
+            </div>
+            <div class="product-info">
+              <h3 class="product-name">[Tập lẻ] Hàng xóm Tầng 12</h3>
+              <p class="product-author">Unknown</p>
+              <div class="product-rating">
+                <span class="stars">⭐⭐⭐⭐</span>
+                <span class="review-count">(32 đánh giá)</span>
+              </div>
+              <div class="product-price-section">
+                <span class="price-original">67,500 đ</span>
+                <span class="price-current">54,000 đ</span>
+                <span class="discount-badge">-20%</span>
+              </div>
+              <button class="btn-add-cart">Thêm vào giỏ hàng</button>
+            </div>
+          </div>
+
+          <!-- Product 3 -->
+          <div class="wishlist-item">
+            <button class="btn-remove-wishlist" title="Xóa khỏi yêu thích">
+              <i class="fas fa-times"></i>
+            </button>
+            <div class="product-image">
+              <img src="https://placehold.co/180x220" alt="Product" />
+            </div>
+            <div class="product-info">
+              <h3 class="product-name">Truyện lập kế thất sắc</h3>
+              <p class="product-author">Folios</p>
+              <div class="product-rating">
+                <span class="stars">⭐⭐⭐⭐⭐</span>
+                <span class="review-count">(28 đánh giá)</span>
+              </div>
+              <div class="product-price-section">
+                <span class="price-original">180,000 đ</span>
+                <span class="price-current">144,000 đ</span>
+                <span class="discount-badge">-20%</span>
+              </div>
+              <button class="btn-add-cart">Thêm vào giỏ hàng</button>
+            </div>
+          </div>
+
+          <!-- Product 4 -->
+          <div class="wishlist-item">
+            <button class="btn-remove-wishlist" title="Xóa khỏi yêu thích">
+              <i class="fas fa-times"></i>
+            </button>
+            <div class="product-image">
+              <img src="https://placehold.co/180x220" alt="Product" />
+            </div>
+            <div class="product-info">
+              <h3 class="product-name">Acrylic Stand-Frieren</h3>
+              <p class="product-author">Merch</p>
+              <div class="product-rating">
+                <span class="stars">⭐⭐⭐⭐</span>
+                <span class="review-count">(15 đánh giá)</span>
+              </div>
+              <div class="product-price-section">
+                <span class="price-original">180,000 đ</span>
+                <span class="price-current">180,000 đ</span>
+              </div>
+              <button class="btn-add-cart">Thêm vào giỏ hàng</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-col">
+            <h5>LIÊN HỆ</h5>
+            <div class="logo-group">
+              <img
+                src="https://placehold.co/60x60/ffffff/9f2425?text=Logo"
+                alt="Kaleidoscope"
+              />
+              <span>Kaleidoscope</span>
+            </div>
+            <p>Hotline: (+84) 97 182 50 26</p>
+          </div>
+          <div class="footer-col">
+            <h5>GIỚI THIỆU</h5>
+            <ul>
+              <li><a href="about.html">Về Kaleidoscope</a></li>
+              <li><a href="#">Chính sách bảo mật</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h5>CHÍNH SÁCH</h5>
+            <ul>
+              <li><a href="#">Chính sách giao hàng</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>COPYRIGHT © 2026 by <strong>Kaleidoscope</strong></p>
+        </div>
+      </div>
+    </footer>
+
+    <script src="../js/wishlist.js"></script>
+  </body>
+</html>
