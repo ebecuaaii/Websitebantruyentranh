@@ -1,21 +1,9 @@
-# ── Stage 1: Build ──────────────────────────────────────
-FROM maven:3.9.6-eclipse-temurin-21 AS build
-
-WORKDIR /app
-
-COPY demo\ \(1\)/demo/pom.xml .
-RUN mvn dependency:go-offline -B
-
-COPY "demo (1)/demo/src" ./src
-
-RUN mvn clean package -DskipTests
-
-# ── Stage 2: Run ─────────────────────────────────────────
 FROM eclipse-temurin:21-jre-alpine
 
 WORKDIR /app
 
-COPY --from=build /app/target/*.jar app.jar
+# context = ./BE, copy JAR từ subfolder
+COPY demo\ \(1\)/demo/target/*.jar app.jar
 
 EXPOSE 8080
 
