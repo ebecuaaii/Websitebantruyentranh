@@ -32,11 +32,13 @@ public class AdminSeeder implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        boolean exists = userRepository.existsByUsername(adminUsername)
-            || userRepository.existsByEmail(adminEmail);
-        if (exists) {
-            return;
-        }
+        try {
+            boolean exists = userRepository.existsByUsername(adminUsername)
+                || userRepository.existsByEmail(adminEmail);
+            if (exists) {
+                LOGGER.info("Admin user already exists");
+                return;
+            }
 
         User admin = User.builder()
             .username(adminUsername)
@@ -48,7 +50,10 @@ public class AdminSeeder implements CommandLineRunner {
             .updatedAt(LocalDateTime.now())
             .build();
 
-        userRepository.save(admin);
-        LOGGER.info("Seeded default admin account: {}", adminUsername);
+            userRepository.save(admin);
+            LOGGER.info("Seeded default admin account: {}", adminUsername);
+        } catch (Exception e) {
+            LOGGER.warn("Admin seeding failed - will retry on next startup", e);
+        }
     }
 }

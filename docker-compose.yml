@@ -1,35 +1,35 @@
-version: '3.8'
+version: "3.8"
 
 services:
-
   # ── Backend: Spring Boot ─────────────────────────────
   backend:
     build:
-      context: ./BE/demo (1)/demo   # Đường dẫn tới Dockerfile BE
+      context: ./BE/demo (1)/demo # Đường dẫn tới Dockerfile BE
       dockerfile: Dockerfile
-    image: webbantruyen-backend:1.0  # Tên image khi build
+    image: webbantruyen-backend:1.0 # Tên image khi build
     container_name: comic-store-be
     ports:
-      - "8081:8080"                  # Map port host:container (đổi sang 8081 nếu 8080 bị chiếm)
+      - "8081:8080" # Map port host:container (đổi sang 8081 nếu 8080 bị chiếm)
     environment:
-      - MONGO_URI=${MONGO_URI}       # Lấy từ file .env
-      - JWT_SECRET=${JWT_SECRET}
+      - SPRING_PROFILES_ACTIVE=dev
+      - JWT_SECRET=${JWT_SECRET:-dev-secret-key}
       - JWT_EXPIRATION=${JWT_EXPIRATION:-86400000}
+      - CORS_ORIGINS=${CORS_ORIGINS:-http://localhost:3000}
     networks:
       - comic-network
-    restart: unless-stopped          # Tự restart nếu crash
+    restart: unless-stopped # Tự restart nếu crash
 
   # ── Frontend: Nginx + Static Files ───────────────────
   frontend:
     build:
-      context: ./FE                  # Đường dẫn tới Dockerfile FE
+      context: ./FE # Đường dẫn tới Dockerfile FE
       dockerfile: Dockerfile
     image: webbantruyen-frontend:1.0
     container_name: comic-store-fe
     ports:
-      - "80:80"                      # Truy cập qua http://localhost
+      - "80:80" # Truy cập qua http://localhost
     depends_on:
-      - backend                      # Chờ BE start trước
+      - backend # Chờ BE start trước
     networks:
       - comic-network
     restart: unless-stopped
@@ -37,4 +37,5 @@ services:
 # ── Network dùng chung cho các services ──────────────
 networks:
   comic-network:
-    driver: bridge                   # Bridge network cho phép các container giao tiếp
+    driver: bridge # Bridge network cho phép các container giao tiếp
+

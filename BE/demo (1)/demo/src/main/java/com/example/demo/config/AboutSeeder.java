@@ -3,12 +3,14 @@ package com.example.demo.config;
 import com.example.demo.entity.AboutPage;
 import com.example.demo.repository.AboutPageRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class AboutSeeder implements CommandLineRunner {
@@ -17,9 +19,11 @@ public class AboutSeeder implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        if (aboutPageRepository.existsById("main")) {
-            return;
-        }
+        try {
+            if (aboutPageRepository.existsById("main")) {
+                log.info("About page seeding already done");
+                return;
+            }
 
         AboutPage about = AboutPage.builder()
             .id("main")
@@ -40,6 +44,10 @@ public class AboutSeeder implements CommandLineRunner {
             .updatedAt(LocalDateTime.now())
             .build();
 
-        aboutPageRepository.save(about);
+            aboutPageRepository.save(about);
+            log.info("About page seeding completed successfully");
+        } catch (Exception e) {
+            log.warn("About page seeding failed - will retry on next startup", e);
+        }
     }
 }
