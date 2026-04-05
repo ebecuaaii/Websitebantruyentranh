@@ -110,36 +110,46 @@
               
               <div class="form-group">
                 <label>Tên danh mục</label>
-                <input type="text" class="form-control" value="Manga" required />
+                <input type="text" name="name" class="form-control" placeholder="Tên danh mục..." required />
               </div>
 
               <div class="form-group">
-                <label>Slug (URL-friendly name)</label>
-                <input type="text" class="form-control" value="manga" required />
+                <label>Biểu tượng (Icon)</label>
+                <input type="text" name="icon" class="form-control" placeholder="Biểu tượng (fas fa-book)..." />
               </div>
 
               <div class="form-group">
                 <label>Mô tả</label>
-                <textarea class="form-control" rows="4" required>Truyện tranh Nhật Bản - nơi tập hợp những bộ manga hay nhất từ các tác giả nổi tiếng thế giới.</textarea>
+                <textarea name="description" class="form-control" rows="4" placeholder="Mô tả danh mục..."></textarea>
               </div>
 
               <div class="form-group">
                 <label>Trạng thái</label>
-                <select class="form-control" required>
-                  <option value="active" selected>Hiển thị</option>
-                  <option value="inactive">Ẩn</option>
+                <select name="status" class="form-control" required>
+                  <option value="ACTIVE" selected>Hiển thị</option>
+                  <option value="INACTIVE">Ẩn</option>
                 </select>
               </div>
             </div>
 
             <div class="form-section">
-              <h3>Hình ảnh</h3>
+              <h3>Hình ảnh danh mục</h3>
               
               <div class="form-group">
-                <label>Hình ảnh danh mục</label>
-                <div class="image-upload">
-                  <input type="file" class="form-control" accept="image/*" />
-                  <img src="https://placehold.co/300x200/ddd/999?text=Category+Image" alt="Category" class="preview-image" />
+                <label>URL Hình ảnh (Thumbnail)</label>
+                <div class="image-upload-wrapper">
+                  <input type="text" name="thumbnailUrl" class="form-control" placeholder="Dán URL hoặc chọn file phía dưới..." />
+                  
+                  <div style="margin-top: 10px;">
+                    <label class="btn btn-secondary-outline" style="cursor: pointer; display: inline-block; padding: 6px 12px; border: 1px solid #ccc; border-radius: 4px;">
+                      <i class="fas fa-upload"></i> Chọn ảnh từ máy tính
+                      <input type="file" class="image-picker hide" accept="image/*" style="display:none;" />
+                    </label>
+                  </div>
+
+                  <div class="preview-container" style="margin-top: 15px; border: 1px dashed #ddd; padding: 10px; text-align: center;">
+                    <img src="https://placehold.co/300x200?text=Preview" alt="Category Preview" class="preview-image" style="max-height: 200px; border-radius: 8px;" id="catPreviewEdit" />
+                  </div>
                 </div>
               </div>
             </div>
