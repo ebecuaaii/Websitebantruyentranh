@@ -8,11 +8,9 @@ on:
 
 jobs:
 
-  # ── JOB 1: BUILD Backend ────────────────────────────
   build-backend:
     name: Build Backend
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -37,13 +35,11 @@ jobs:
           name: backend-jar
           path: "./BE/demo (1)/demo/target/*.jar"
 
-  # ── JOB 2: BUILD & PUSH Docker Images ───────────────
   docker-build-push:
     name: Build & Push Docker Images
     runs-on: ubuntu-latest
     needs: build-backend
     if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/dev'
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -60,16 +56,16 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      # context = thư mục chứa JAR, file = Dockerfile ở BE root
       - name: Build & Push Backend Image
         uses: docker/build-push-action@v5
         with:
-        context: "./BE/demo (1)/demo"
-        file: "./BE/Dockerfile"
-        push: true
-        tags: |
-          nguyenhongoctruc/webbantruyen-backend:1.0
-          nguyenhongoctruc/webbantruyen-backend:latest
+          context: "./BE/demo (1)/demo"
+          file: "./BE/demo (1)/demo/Dockerfile"
+          push: true
+          tags: |
+            nguyenhongoctruc/webbantruyen-backend:1.0
+            nguyenhongoctruc/webbantruyen-backend:latest
+
       - name: Build & Push Frontend Image
         uses: docker/build-push-action@v5
         with:
@@ -80,16 +76,14 @@ jobs:
             nguyenhongoctruc/webbantruyen-frontend:1.0
             nguyenhongoctruc/webbantruyen-frontend:latest
 
-  # ── JOB 3: NOTIFY ───────────────────────────────────
   notify-deploy:
     name: Notify Deploy Success
     runs-on: ubuntu-latest
     needs: docker-build-push
     if: github.ref == 'refs/heads/main'
-
     steps:
       - name: Deploy notification
         run: |
-          echo "✅ Deploy thành công!"
+          echo "Deploy thanh cong!"
           echo "Backend: https://hub.docker.com/r/nguyenhongoctruc/webbantruyen-backend"
           echo "Frontend: https://hub.docker.com/r/nguyenhongoctruc/webbantruyen-frontend"
