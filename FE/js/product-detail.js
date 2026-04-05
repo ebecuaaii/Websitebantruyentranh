@@ -69,6 +69,18 @@ async function addToCart() {
     } catch (e) { alert('Lỗi: ' + e.message) }
 }
 
+
+if (!getToken()) { window.location.href = 'login.html'; return }
+const qty = parseInt(document.getElementById('qtyInput')?.value || 1)
+try {
+    await fetch(`${BASE_URL}/cart`, {
+        method: 'POST', headers: authHeaders(),
+        body: JSON.stringify({ productId, quantity: qty })
+    })
+    window.location.href = 'checkout.html'
+} catch (e) { alert('Lỗi: ' + e.message) }
+
+
 async function addToWishlist() {
     if (!getToken()) { window.location.href = 'login.html'; return }
     try {
@@ -83,4 +95,5 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('reviewForm')?.addEventListener('submit', submitReview)
     document.getElementById('btnAddCart')?.addEventListener('click', addToCart)
     document.getElementById('btnWishlist')?.addEventListener('click', addToWishlist)
+    document.querySelectorAll('.btn-buy-now').forEach(btn => btn.addEventListener('click', buyNow))
 })
