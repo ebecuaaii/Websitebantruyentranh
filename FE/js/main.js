@@ -151,9 +151,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Toggle menu items hoặc active states
     const navLinks = document.querySelectorAll('.nav-btn');
-    
+
     navLinks.forEach(link => {
-        link.addEventListener('click', function(e) {
+        link.addEventListener('click', function (e) {
             if (this.getAttribute('href') === '#') {
                 e.preventDefault();
             }
@@ -164,7 +164,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             this.style.border = '1px solid #777';
             this.style.backgroundColor = '#fff';
-            
+
             console.log('Navigated to: ' + this.textContent);
         });
     });
@@ -172,7 +172,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Sidebar Collapse Logic
     const sidebarHeaders = document.querySelectorAll('.sidebar-header');
     sidebarHeaders.forEach(header => {
-        header.addEventListener('click', function() {
+        header.addEventListener('click', function () {
             const block = this.parentElement;
             block.classList.toggle('collapsed');
         });
@@ -183,7 +183,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const mainImage = document.getElementById('mainImage');
     if (thumbnails.length > 0 && mainImage) {
         thumbnails.forEach(thumb => {
-            thumb.addEventListener('click', function() {
+            thumb.addEventListener('click', function () {
                 thumbnails.forEach(t => t.classList.remove('active'));
                 this.classList.add('active');
                 mainImage.src = this.querySelector('img').src;
@@ -195,7 +195,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnMinus = document.querySelector('.qty-btn.minus');
     const btnPlus = document.querySelector('.qty-btn.plus');
     const qtyInput = document.querySelector('.qty-input');
-    
+
     if (btnMinus && btnPlus && qtyInput) {
         btnMinus.addEventListener('click', () => {
             let val = parseInt(qtyInput.value) || 1;
@@ -230,7 +230,19 @@ document.addEventListener('DOMContentLoaded', () => {
         cart: 'cartCount',
         favorite: 'favoriteCount'
     };
-    const updateBadges = () => {
+    window.updateBadges = async () => {
+        // Sync with BE if needed
+        if (getToken()) {
+            try {
+                const data = await apiRequest('/api/cart');
+                const itemsCount = (data.items || []).reduce((acc, item) => acc + item.quantity, 0);
+                localStorage.setItem('cartCount', itemsCount);
+                
+                const wishlistData = await apiRequest('/api/wishlist');
+                localStorage.setItem('favoriteCount', (wishlistData.products || []).length);
+            } catch (err) { }
+        }
+
         document.querySelectorAll('[data-badge]').forEach(item => {
             const type = item.dataset.badge;
             const key = badgeMap[type];
@@ -246,9 +258,43 @@ document.addEventListener('DOMContentLoaded', () => {
                 badge.classList.add('hidden');
                 item.classList.remove('has-badge');
             }
+            
+            // Add click listener for navigation if not already a link
+            if (!item.querySelector('a')) {
+                item.style.cursor = 'pointer';
+                const link = item.dataset.link;
+                if (link) {
+                   item.onclick = () => window.location.href = link;
+                } else {
+                    item.onclick = () => {
+                        const inPages = window.location.pathname.includes('/pages/');
+                        const base = inPages ? '' : 'pages/';
+                        if (type === 'cart') window.location.href = `${base}cart.html`;
+                        if (type === 'favorite') window.location.href = `${base}wishlist.html`;
+                    };
+                }
+            }
         });
     };
     updateBadges();
+
+    window.addToCart = async (productId, quantity = 1) => {
+        if (!getToken()) {
+            const inPages = window.location.pathname.includes('/pages/');
+            window.location.href = inPages ? 'login.html' : 'pages/login.html';
+            return;
+        }
+        try {
+            await apiRequest('/api/cart', {
+                method: 'POST',
+                body: JSON.stringify({ productId, quantity })
+            });
+            alert('Đã thêm sản phẩm vào giỏ hàng');
+            updateBadges();
+        } catch (err) {
+            alert(err.message || 'Thêm vào giỏ hàng thất bại');
+        }
+    };
 
     const updateHeaderUserName = () => {
         const storedUser = JSON.parse(localStorage.getItem('authUser') || '{}');
@@ -856,7 +902,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     if (adminUserTable) {
-        loadAdminUsers().catch(() => {});
+        loadAdminUsers().catch(() => { });
         adminUserTable.addEventListener('click', async (event) => {
             const btn = event.target.closest('button');
             if (!btn) return;
@@ -933,5 +979,178 @@ document.addEventListener('DOMContentLoaded', () => {
             adminUserForm.reset();
             adminUserForm.querySelector('[name="id"]').value = '';
         });
+    }
+
+    // ─── PHẦN: CÁC HÀM GỌI API CHO CATEGORY & PRODUCTS ───
+
+    // Lấy danh sách tất cả danh mục
+    const fetchCategories = async () => {
+        try {
+            return await apiRequest('/api/categories');
+        } catch (err) {
+            console.error("Lỗi khi tải danh mục:", err);
+            return [];
+        }
+    };
+
+    // Lấy danh sách sản phẩm (có thể lọc theo categoryId hoặc lấy tất cả)
+    const fetchProducts = async (categoryId = null) => {
+        const path = categoryId ? `/api/categories/${categoryId}/products` : '/api/products';
+        try {
+            return await apiRequest(path);
+        } catch (err) {
+            console.error("Lỗi khi tải sản phẩm:", err);
+            return [];
+        }
+    };
+
+    // Lấy chi tiết một sản phẩm theo ID
+    const fetchProductById = async (productId) => {
+        try {
+            const data = await apiRequest(`/api/products/${productId}`);
+            return data;
+        } catch (err) {
+            console.error("Lỗi khi tải chi tiết sản phẩm:", err);
+            return null;
+        }
+    };
+
+    // ─── PHẦN: HÀM HIỂN THỊ (RENDER) DỮ LIỆU LÊN GIAO DIỆN ───
+
+    // Render danh sách sản phẩm ra HTML
+    const renderProducts = (products, containerSelector) => {
+        const containers = document.querySelectorAll(containerSelector);
+        if (containers.length === 0) return;
+
+        // Kiểm tra xem có đang ở trong bản thư mục pages/ hay không
+        const isInPagesFolder = window.location.pathname.includes('/pages/');
+        const detailPath = isInPagesFolder ? 'product-detail.html' : 'pages/product-detail.html';
+
+        const html = products.length === 0 
+            ? '<p class="no-data">Không có sản phẩm nào.</p>'
+            : products.map(product => `
+                <div class="product-card" onclick="window.location.href='${detailPath}?id=${product.id}'">
+                    <div class="product-image">
+                        ${product.discount ? `<div class="discount-badge">-${product.discount}%</div>` : ''}
+                        <img src="${product.imageUrl || 'https://placehold.co/200x250?text=No+Image'}" alt="${product.name}">
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">${product.name}</h3>
+                        <p class="product-author">${product.author || ''}</p>
+                        <div class="product-price">
+                            <span class="current-price">${(product.price || 0).toLocaleString('vi-VN')} đ</span>
+                            ${product.oldPrice ? `<span class="old-price">${product.oldPrice.toLocaleString('vi-VN')} đ</span>` : ''}
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+        containers.forEach(container => {
+            container.innerHTML = html;
+        });
+    };
+
+    // Render danh mục vào Sidebar/Menu
+    const renderCategories = (categories, containerSelector) => {
+        const container = document.querySelector(containerSelector);
+        if (!container) return;
+
+        container.innerHTML = categories.map(cat => `
+            <li><a href="#" data-category-id="${cat.id}">${cat.name}</a></li>
+        `).join('');
+    };
+
+    // ─── PHẦN: TỰ ĐỘNG GỌI KHI MỞ TRANG TƯƠNG ỨNG ───
+    const pagePath = window.location.pathname;
+
+    // Trang chủ
+    if (pagePath.endsWith('index.html') || pagePath === '/' || pagePath.endsWith('/')) {
+        fetchProducts().then(data => {
+            const grids = document.querySelectorAll('.product-grid');
+            if (grids[0]) renderProducts(data.slice(0, 4), '.product-section:nth-of-type(1) .product-grid');
+            if (grids[1]) renderProducts(data.slice(4, 8), '.product-section:nth-of-type(2) .product-grid');
+        });
+    }
+
+    // Trang tất cả sản phẩm
+    if (pagePath.endsWith('products.html')) {
+        fetchProducts().then(data => renderProducts(data, '.product-grid-3'));
+        fetchCategories().then(cats => renderCategories(cats, '.category-list'));
+    }
+
+    // Trang chi tiết sản phẩm
+    if (pagePath.endsWith('product-detail.html')) {
+        const urlParams = new URLSearchParams(window.location.search);
+        const productId = urlParams.get('id');
+        const pdWishlistHeart = document.querySelector('.pd-wishlist');
+
+        if (productId) {
+            fetchProductById(productId).then(product => {
+                if (product) {
+                    const titleEl = document.querySelector('.pd-title');
+                    const priceEl = document.querySelector('.pd-current-price');
+                    const imgEl = document.getElementById('mainImage');
+                    const descEl = document.querySelector('.pd-description');
+
+                    if (titleEl) titleEl.textContent = product.name;
+                    if (priceEl) priceEl.textContent = (product.price || 0).toLocaleString('vi-VN') + ' đ';
+                    if (imgEl) imgEl.src = product.imageUrl || '';
+                    if (descEl) descEl.textContent = product.description || '';
+                }
+            });
+
+            // Check if product is in wishlist
+            if (getToken()) {
+                apiRequest('/api/wishlist').then(data => {
+                    const products = data.products || [];
+                    const isInWishlist = products.some(p => p.id === productId);
+                    if (isInWishlist && pdWishlistHeart) {
+                        pdWishlistHeart.classList.remove('fa-regular');
+                        pdWishlistHeart.classList.add('fa-solid', 'active');
+                    }
+                    localStorage.setItem('favoriteCount', products.length);
+                    updateBadges();
+                }).catch(() => { });
+            }
+
+            // Add to Cart handler
+            const btnAddCart = document.querySelector('.btn-add-cart');
+            const qtyInputDetail = document.querySelector('.qty-input');
+            if (btnAddCart && qtyInputDetail) {
+                btnAddCart.onclick = (e) => {
+                    e.preventDefault();
+                    const qty = parseInt(qtyInputDetail.value) || 1;
+                    window.addToCart(productId, qty);
+                };
+            }
+        }
+
+        if (pdWishlistHeart && productId) {
+            pdWishlistHeart.addEventListener('click', async () => {
+                if (!getToken()) {
+                    window.location.href = 'login.html';
+                    return;
+                }
+
+                const isActive = pdWishlistHeart.classList.contains('active');
+                try {
+                    if (isActive) {
+                        await apiRequest(`/api/wishlist/${productId}`, { method: 'DELETE' });
+                        pdWishlistHeart.classList.remove('fa-solid', 'active');
+                        pdWishlistHeart.classList.add('fa-regular');
+                    } else {
+                        await apiRequest(`/api/wishlist/${productId}`, { method: 'POST' });
+                        pdWishlistHeart.classList.remove('fa-regular');
+                        pdWishlistHeart.classList.add('fa-solid', 'active');
+                    }
+                    // Cập nhật badge
+                    const data = await apiRequest('/api/wishlist');
+                    localStorage.setItem('favoriteCount', (data.products || []).length);
+                    updateBadges();
+                } catch (err) {
+                    alert(err.message || 'Thao tác thất bại');
+                }
+            });
+        }
     }
 });

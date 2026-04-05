@@ -69,7 +69,6 @@
 
         <!-- Header Actions -->
         <div class="header-actions">
-          <!-- Highlighted bag -->
           <a href="cart.html" class="action-item has-badge" data-badge="cart">
             <span class="action-badge hidden"></span>
             <i class="fa-solid fa-cart-shopping"></i>
@@ -80,12 +79,9 @@
             <i class="fa-regular fa-heart"></i>
             <span>Yêu thích</span>
           </div>
-          <a href="profile.html" class="action-item header-user-link">
+          <a href="auth.html" class="action-item header-user-link">
             <i class="fa-regular fa-user"></i>
             <span class="header-user-name">Tài khoản</span>
-          </a>
-          <a href="../index.html" class="logout-action" title="Đăng xuất">
-            <i class="fa-solid fa-arrow-right-from-bracket"></i>
           </a>
         </div>
       </div>
@@ -122,51 +118,8 @@
             </label>
 
             <div class="cart-items-wrapper">
-              <!-- Product 1 -->
-              <div class="cart-item">
-                <input type="checkbox" class="cart-checkbox" />
-                <img
-                  src="https://placehold.co/75x100/fff/333?text=Spy+X+Family"
-                  alt="Spy X Family - Tập 13"
-                  class="cart-item-img"
-                />
-                <div class="cart-item-title">Spy X Family - Tập 13</div>
-                <div class="cart-item-pricing">
-                  <div class="cart-item-price">27.000 đ</div>
-                  <div class="cart-item-old-price">30.000 đ</div>
-                </div>
-                <div class="qty-selector">
-                  <button class="qty-btn qty-minus">-</button>
-                  <input type="text" class="qty-input" value="1" />
-                  <button class="qty-btn qty-plus">+</button>
-                </div>
-                <button class="btn-remove-cart" title="Xóa sản phẩm">
-                  <i class="fa-regular fa-trash-can"></i>
-                </button>
-              </div>
-
-              <!-- Product 2 -->
-              <div class="cart-item">
-                <input type="checkbox" class="cart-checkbox" />
-                <img
-                  src="https://placehold.co/75x100/fff/333?text=Ai+Da+Giet+Anh+Hung"
-                  alt="Ai Đã Giết Anh Hùng - 2"
-                  class="cart-item-img"
-                />
-                <div class="cart-item-title">Ai Đã Giết Anh Hùng - 2</div>
-                <div class="cart-item-pricing">
-                  <div class="cart-item-price">93.600 đ</div>
-                  <div class="cart-item-old-price">120.000 đ</div>
-                </div>
-                <div class="qty-selector">
-                  <button class="qty-btn qty-minus">-</button>
-                  <input type="text" class="qty-input" value="1" />
-                  <button class="qty-btn qty-plus">+</button>
-                </div>
-                <button class="btn-remove-cart" title="Xóa sản phẩm">
-                  <i class="fa-regular fa-trash-can"></i>
-                </button>
-              </div>
+              <!-- Products will be loaded here via JS -->
+              <p class="loading">Đang tải giỏ hàng...</p>
             </div>
           </div>
 
@@ -177,19 +130,12 @@
             <div class="cart-summary">
               <div class="summary-row">
                 <span>Tổng tiền:</span>
-                <!-- Value will be updated by JS, placeholder here -->
-                <span>150.000 đ</span>
+                <span>0 đ</span>
               </div>
-              <div class="summary-row">
-                <span>Tiết kiệm:</span>
-                <span>29.400 đ</span>
-              </div>
-
               <div class="cart-divider"></div>
-
               <div class="summary-row total">
                 <span>Tạm tính:</span>
-                <span style="color: #9f2425">120.600 đ</span>
+                <span style="color: #9f2425">0 đ</span>
               </div>
 
               <div class="summary-actions">
@@ -279,5 +225,6 @@
 
     <!-- Custom JS -->
     <script src="../js/main.js"></script>
+    <script src="../js/cart.js"></script>
   </body>
 </html>

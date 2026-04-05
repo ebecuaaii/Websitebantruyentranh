@@ -53,19 +53,20 @@
         </div>
 
         <div class="header-actions">
-          <div class="action-item has-badge">
+          <div class="action-item has-badge" data-badge="cart">
             <span class="action-badge hidden"></span>
             <i class="fa-solid fa-cart-shopping"></i>
             <span><a href="cart.html">Giỏ hàng</a></span>
           </div>
-          <div class="action-item">
+          <div class="action-item has-badge" data-badge="favorite">
+            <span class="action-badge hidden"></span>
             <i class="fa-solid fa-heart"></i>
             <span><a href="wishlist.html">Yêu thích</a></span>
           </div>
-          <div class="action-item">
+          <a href="auth.html" class="action-item header-user-link">
             <i class="fa-solid fa-user"></i>
-            <span><a href="profile.html">Tài khoản</a></span>
-          </div>
+            <span class="header-user-name">Tài khoản</span>
+          </a>
         </div>
       </div>
     </header>
@@ -101,100 +102,8 @@
         </div>
 
         <div class="wishlist-products">
-          <!-- Product 1 -->
-          <div class="wishlist-item">
-            <button class="btn-remove-wishlist" title="Xóa khỏi yêu thích">
-              <i class="fas fa-times"></i>
-            </button>
-            <div class="product-image">
-              <img src="https://placehold.co/180x220" alt="Product" />
-            </div>
-            <div class="product-info">
-              <h3 class="product-name">Spy X Family - Tập 13</h3>
-              <p class="product-author">Tatsuya Endo</p>
-              <div class="product-rating">
-                <span class="stars">⭐⭐⭐⭐⭐</span>
-                <span class="review-count">(45 đánh giá)</span>
-              </div>
-              <div class="product-price-section">
-                <span class="price-original">273,000 đ</span>
-                <span class="price-current">218,400 đ</span>
-                <span class="discount-badge">-20%</span>
-              </div>
-              <button class="btn-add-cart">Thêm vào giỏ hàng</button>
-            </div>
-          </div>
-
-          <!-- Product 2 -->
-          <div class="wishlist-item">
-            <button class="btn-remove-wishlist" title="Xóa khỏi yêu thích">
-              <i class="fas fa-times"></i>
-            </button>
-            <div class="product-image">
-              <img src="https://placehold.co/180x220" alt="Product" />
-            </div>
-            <div class="product-info">
-              <h3 class="product-name">[Tập lẻ] Hàng xóm Tầng 12</h3>
-              <p class="product-author">Unknown</p>
-              <div class="product-rating">
-                <span class="stars">⭐⭐⭐⭐</span>
-                <span class="review-count">(32 đánh giá)</span>
-              </div>
-              <div class="product-price-section">
-                <span class="price-original">67,500 đ</span>
-                <span class="price-current">54,000 đ</span>
-                <span class="discount-badge">-20%</span>
-              </div>
-              <button class="btn-add-cart">Thêm vào giỏ hàng</button>
-            </div>
-          </div>
-
-          <!-- Product 3 -->
-          <div class="wishlist-item">
-            <button class="btn-remove-wishlist" title="Xóa khỏi yêu thích">
-              <i class="fas fa-times"></i>
-            </button>
-            <div class="product-image">
-              <img src="https://placehold.co/180x220" alt="Product" />
-            </div>
-            <div class="product-info">
-              <h3 class="product-name">Truyện lập kế thất sắc</h3>
-              <p class="product-author">Folios</p>
-              <div class="product-rating">
-                <span class="stars">⭐⭐⭐⭐⭐</span>
-                <span class="review-count">(28 đánh giá)</span>
-              </div>
-              <div class="product-price-section">
-                <span class="price-original">180,000 đ</span>
-                <span class="price-current">144,000 đ</span>
-                <span class="discount-badge">-20%</span>
-              </div>
-              <button class="btn-add-cart">Thêm vào giỏ hàng</button>
-            </div>
-          </div>
-
-          <!-- Product 4 -->
-          <div class="wishlist-item">
-            <button class="btn-remove-wishlist" title="Xóa khỏi yêu thích">
-              <i class="fas fa-times"></i>
-            </button>
-            <div class="product-image">
-              <img src="https://placehold.co/180x220" alt="Product" />
-            </div>
-            <div class="product-info">
-              <h3 class="product-name">Acrylic Stand-Frieren</h3>
-              <p class="product-author">Merch</p>
-              <div class="product-rating">
-                <span class="stars">⭐⭐⭐⭐</span>
-                <span class="review-count">(15 đánh giá)</span>
-              </div>
-              <div class="product-price-section">
-                <span class="price-original">180,000 đ</span>
-                <span class="price-current">180,000 đ</span>
-              </div>
-              <button class="btn-add-cart">Thêm vào giỏ hàng</button>
-            </div>
-          </div>
+          <!-- Products will be loaded here via JS -->
+          <p class="loading">Đang tải danh sách yêu thích...</p>
         </div>
       </div>
     </section>
@@ -234,6 +143,7 @@
       </div>
     </footer>
 
+    <script src="../js/main.js"></script>
     <script src="../js/wishlist.js"></script>
   </body>
 </html>
