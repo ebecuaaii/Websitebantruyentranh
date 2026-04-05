@@ -110,17 +110,17 @@
               
               <div class="form-group">
                 <label>Tên sản phẩm</label>
-                <input type="text" class="form-control" value="One Piece Vol.1" required />
+                <input type="text" name="name" class="form-control" placeholder="Tên sản phẩm..." required />
               </div>
 
               <div class="form-group">
-                <label>Mô tả ngắn</label>
-                <textarea class="form-control" rows="3" placeholder="Mô tả ngắn về sản phẩm...">Manga One Piece Volume 1 - Cuộc phiêu lưu của Luffy bắt đầu</textarea>
+                <label>Tác giả</label>
+                <input type="text" name="author" class="form-control" placeholder="Tên tác giả..." />
               </div>
 
               <div class="form-group">
                 <label>Mô tả chi tiết</label>
-                <textarea class="form-control" rows="5" placeholder="Mô tả chi tiết...">Đây là volume đầu tiên của series One Piece nổi tiếng. Theo dõi câu chuyện về Monkey D. Luffy tìm kiếm kho báu One Piece để trở thành Vua Hải tặc.</textarea>
+                <textarea name="description" class="form-control" rows="5" placeholder="Mô tả chi tiết..."></textarea>
               </div>
             </div>
 
@@ -130,41 +130,32 @@
               <div class="form-row">
                 <div class="form-group">
                   <label>Danh mục</label>
-                  <select class="form-control" required>
-                    <option value="manga">Manga</option>
-                    <option value="manhwa">Manhwa</option>
-                    <option value="light-novel">Light Novel</option>
-                    <option value="figure">Figure</option>
-                    <option value="merch">Merch</option>
+                  <select name="categoryId" class="form-control" id="categorySelect" required>
+                    <option value="">-- Chọn danh mục --</option>
                   </select>
                 </div>
 
                 <div class="form-group">
                   <label>Giá (VNĐ)</label>
-                  <input type="number" class="form-control" value="125000" required />
+                  <input type="number" name="price" class="form-control" placeholder="0" required />
                 </div>
               </div>
 
               <div class="form-row">
                 <div class="form-group">
-                  <label>Giá khuyến mãi (VNĐ)</label>
-                  <input type="number" class="form-control" placeholder="Để trống nếu không có" />
+                  <label>Số lượng trong kho</label>
+                  <input type="number" name="quantity" class="form-control" placeholder="0" required />
                 </div>
 
                 <div class="form-group">
-                  <label>Số lượng trong kho</label>
-                  <input type="number" class="form-control" value="26" required />
+                  <label>Trạng thái</label>
+                  <select name="status" class="form-control" required>
+                    <option value="ACTIVE" selected>Hiển thị</option>
+                    <option value="INACTIVE">Ẩn</option>
+                  </select>
                 </div>
               </div>
 
-              <div class="form-group">
-                <label>Trạng thái</label>
-                <select class="form-control" required>
-                  <option value="active" selected>Hiển thị</option>
-                  <option value="inactive">Ẩn</option>
-                </select>
-              </div>
-            </div>
 
             <div class="form-section">
               <h3>Hình ảnh</h3>
@@ -172,7 +163,8 @@
               <div class="form-group">
                 <label>Hình ảnh chính</label>
                 <div class="image-upload">
-                  <input type="file" class="form-control" accept="image/*" />
+                  <input type="file" class="image-picker form-control" accept="image/*" />
+                  <input type="hidden" name="imageUrl"> <!-- Dữ liệu thực -->
                   <img src="https://placehold.co/300x400/ddd/999?text=Product+Image" alt="Product" class="preview-image" />
                 </div>
               </div>
@@ -180,8 +172,8 @@
               <div class="form-group">
                 <label>Hình ảnh bổ sung</label>
                 <div class="multiple-upload">
-                  <input type="file" class="form-control" accept="image/*" multiple />
-                  <div class="image-gallery">
+                  <input type="file" class="multiple-picker form-control" accept="image/*" multiple />
+                  <div class="image-gallery image-gallery-grid">
                     <img src="https://placehold.co/150x150/ddd/999?text=Image+1" alt="Image 1" />
                     <img src="https://placehold.co/150x150/ddd/999?text=Image+2" alt="Image 2" />
                   </div>
