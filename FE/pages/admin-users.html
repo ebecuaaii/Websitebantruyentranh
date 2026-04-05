@@ -101,31 +101,11 @@
           <h2>Danh sách tài khoản người dùng</h2>
         </div>
 
-        <form class="admin-form" id="adminUserForm">
-          <input type="hidden" name="id" />
-          <div class="table-controls">
-            <div class="filter-group">
-              <input class="form-control" type="text" name="username" placeholder="Username" required />
-              <input class="form-control" type="email" name="email" placeholder="Email" required />
-              <input class="form-control" type="password" name="password" placeholder="Mật khẩu" />
-              <input class="form-control" type="text" name="fullName" placeholder="Họ tên" />
-              <input class="form-control" type="text" name="phone" placeholder="Số điện thoại" />
-              <input class="form-control" type="text" name="avatar" placeholder="Avatar URL" />
-              <select class="form-control" name="role">
-                <option value="USER">USER</option>
-                <option value="ADMIN">ADMIN</option>
-              </select>
-              <label class="form-control" style="display: flex; align-items: center; gap: 8px;">
-                <input type="checkbox" name="enabled" checked />
-                Hoạt động
-              </label>
-            </div>
-            <div class="filter-group">
-              <button class="btn-paging active" type="submit">Lưu</button>
-              <button class="btn-paging" type="button" id="adminUserReset">Làm mới</button>
-            </div>
-          </div>
-        </form>
+        <div class="table-controls" style="margin-bottom: 20px;">
+          <button class="btn-create" onclick="window.location.href='admin-user-add.html'" style="background: #9f2425; color: #fff; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; font-weight: 600;">
+            <i class="fas fa-plus"></i> Tạo tài khoản mới
+          </button>
+        </div>
 
         <div class="table-responsive">
           <table class="admin-table">
@@ -140,24 +120,19 @@
                 <th>Hành động</th>
               </tr>
             </thead>
-            <tbody id="adminUserTbody"></tbody>
+            <tbody id="adminUserTableBody">
+              <!-- Users will be loaded here via JS -->
+              <tr><td colspan="7" style="text-align:center">Đang tải danh sách người dùng...</td></tr>
+            </tbody>
           </table>
         </div>
 
-        <div class="pagination">
-          <button class="btn-paging" disabled>
-            <i class="fas fa-chevron-left"></i>
-          </button>
-          <button class="btn-paging active">1</button>
-          <button class="btn-paging">2</button>
-          <button class="btn-paging">3</button>
-          <button class="btn-paging">
-            <i class="fas fa-chevron-right"></i>
-          </button>
+        <div class="pagination" id="adminUserPagination">
+          <!-- Pagination buttons will be loaded here via JS -->
         </div>
       </main>
     </div>
 
-    <script src="../js/main.js"></script>
+    <script src="../js/admin.js"></script>
   </body>
 </html>
