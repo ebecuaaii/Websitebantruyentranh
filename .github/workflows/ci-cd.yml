@@ -57,14 +57,12 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Build & Push Backend Image
-        uses: docker/build-push-action@v5
-        with:
-          context: "./BE/demo (1)/demo"
-          file: "./BE/demo (1)/demo/Dockerfile"
-          push: true
-          tags: |
-            nguyenhongoctruc/webbantruyen-backend:1.0
-            nguyenhongoctruc/webbantruyen-backend:latest
+        run: |
+          cd "./BE/demo (1)/demo"
+          docker build -t nguyenhongoctruc/webbantruyen-backend:1.0 \
+                       -t nguyenhongoctruc/webbantruyen-backend:latest .
+          docker push nguyenhongoctruc/webbantruyen-backend:1.0
+          docker push nguyenhongoctruc/webbantruyen-backend:latest
 
       - name: Build & Push Frontend Image
         uses: docker/build-push-action@v5
