@@ -36,14 +36,14 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const redirectToLogin = () => {
-        const path = window.location.pathname;
-        if (path.endsWith('/admin-users.html')) {
+        const path = window.location.pathname.toLowerCase();
+        const isAdminPath = path.includes('/admin-');
+        if (isAdminPath) {
             window.location.href = 'admin-login.html';
             return;
         }
-        if (path.endsWith('/profile.html')) {
-            window.location.href = 'login.html';
-        }
+        const inPages = path.includes('/pages/');
+        window.location.href = inPages ? 'login.html' : 'pages/login.html';
     };
 
     const showMessage = (form, message, type = 'error') => {
@@ -81,7 +81,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         if (!response.ok) {
-            if (response.status === 401) {
+            if (response.status === 401 || response.status === 403) {
                 clearSession();
                 redirectToLogin();
             }
@@ -1115,12 +1115,35 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Add to Cart handler
             const btnAddCart = document.querySelector('.btn-add-cart');
+            const btnBuyNow = document.querySelector('.btn-buy-now');
             const qtyInputDetail = document.querySelector('.qty-input');
             if (btnAddCart && qtyInputDetail) {
                 btnAddCart.onclick = (e) => {
                     e.preventDefault();
                     const qty = parseInt(qtyInputDetail.value) || 1;
                     window.addToCart(productId, qty);
+                };
+            }
+
+            if (btnBuyNow && qtyInputDetail) {
+                btnBuyNow.onclick = async (e) => {
+                    e.preventDefault();
+                    const qty = parseInt(qtyInputDetail.value) || 1;
+
+                    if (!getToken()) {
+                        window.location.href = 'login.html';
+                        return;
+                    }
+
+                    try {
+                        await apiRequest('/api/cart', {
+                            method: 'POST',
+                            body: JSON.stringify({ productId, quantity: qty })
+                        });
+                        window.location.href = 'checkout.html';
+                    } catch (err) {
+                        alert(err.message || 'Mua ngay thất bại');
+                    }
                 };
             }
         }

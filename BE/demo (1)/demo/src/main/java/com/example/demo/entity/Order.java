@@ -15,9 +15,24 @@ public class Order {
 
     private String userId;
     private List<OrderItem> items;
+    private Double subtotalAmount;
+    private Double shippingFee;
+    private String shippingMethod;
     private Double totalAmount;
     private String couponCode;
     private Double discount;
+
+    private String receiverName;
+    private String receiverPhone;
+    private String receiverEmail;
+
+    private PaymentMethod paymentMethod = PaymentMethod.COD;
+    private PaymentStatus paymentStatus = PaymentStatus.PENDING;
+    private String paymentProvider;
+    private String paymentTxnRef;
+    private String paymentTransactionId;
+    private String paymentMessage;
+    private LocalDateTime paidAt;
 
     private OrderStatus status = OrderStatus.PENDING;
 
