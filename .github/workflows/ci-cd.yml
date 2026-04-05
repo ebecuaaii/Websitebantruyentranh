@@ -64,7 +64,7 @@ jobs:
       - name: Build & Push Backend Image
         uses: docker/build-push-action@v5
         with:
-          context: "./BE/demo (1)/demo"
+          context: ./BE
           push: true
           tags: |
             nguyenhongoctruc/webbantruyen-backend:1.0
