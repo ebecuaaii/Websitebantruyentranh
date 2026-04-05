@@ -85,7 +85,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 clearSession();
                 redirectToLogin();
             }
-            const message = payload?.message || 'Request failed';
+            const message = payload?.message || payload?.data?.message || 'Request failed';
             throw new Error(message);
         }
 
@@ -237,7 +237,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const data = await apiRequest('/api/cart');
                 const itemsCount = (data.items || []).reduce((acc, item) => acc + item.quantity, 0);
                 localStorage.setItem('cartCount', itemsCount);
-                
+
                 const wishlistData = await apiRequest('/api/wishlist');
                 localStorage.setItem('favoriteCount', (wishlistData.products || []).length);
             } catch (err) { }
@@ -258,13 +258,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 badge.classList.add('hidden');
                 item.classList.remove('has-badge');
             }
-            
+
             // Add click listener for navigation if not already a link
             if (!item.querySelector('a')) {
                 item.style.cursor = 'pointer';
                 const link = item.dataset.link;
                 if (link) {
-                   item.onclick = () => window.location.href = link;
+                    item.onclick = () => window.location.href = link;
                 } else {
                     item.onclick = () => {
                         const inPages = window.location.pathname.includes('/pages/');
@@ -1026,7 +1026,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const isInPagesFolder = window.location.pathname.includes('/pages/');
         const detailPath = isInPagesFolder ? 'product-detail.html' : 'pages/product-detail.html';
 
-        const html = products.length === 0 
+        const html = products.length === 0
             ? '<p class="no-data">Không có sản phẩm nào.</p>'
             : products.map(product => `
                 <div class="product-card" onclick="window.location.href='${detailPath}?id=${product.id}'">

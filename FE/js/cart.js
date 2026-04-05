@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 localStorage.removeItem('authUser');
                 window.location.href = 'login.html';
             }
-            const message = payload?.message || 'Request failed';
+            const message = payload?.message || payload?.data?.message || 'Request failed';
             throw new Error(message);
         }
 
@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const renderCart = (cartData) => {
         if (!cartItemsWrapper) return;
-        
+
         const items = cartData.items || [];
         if (items.length === 0) {
             cartItemsWrapper.innerHTML = '<p class="no-data">Giỏ hàng của bạn đang trống.</p>';
@@ -90,7 +90,7 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             const data = await apiRequest('/api/cart');
             renderCart(data);
-            
+
             // Sync badge
             const itemsCount = (data.items || []).reduce((acc, item) => acc + item.quantity, 0);
             localStorage.setItem('cartCount', itemsCount);

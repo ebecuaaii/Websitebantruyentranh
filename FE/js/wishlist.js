@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 localStorage.removeItem('authUser');
                 window.location.href = 'login.html';
             }
-            const message = payload?.message || 'Request failed';
+            const message = payload?.message || payload?.data?.message || 'Request failed';
             throw new Error(message);
         }
 
@@ -52,7 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const renderWishlist = (products) => {
         if (!wishlistContainer) return;
-        
+
         if (wishlistCountEl) {
             wishlistCountEl.textContent = products.length;
         }
