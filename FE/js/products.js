@@ -1,4 +1,7 @@
-const BASE_URL = "https://webbantruyen-backend-latest.onrender.com/api";
+const BASE_URL =
+  (window.location.hostname === "localhost"
+    ? "http://localhost:8080"
+    : "https://webbantruyen-backend-latest.onrender.com") + "/api";
 const getToken = () => localStorage.getItem("authToken");
 const authHeaders = () => ({
   Authorization: `Bearer ${getToken()}`,

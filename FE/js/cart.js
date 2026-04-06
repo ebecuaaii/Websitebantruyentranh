@@ -2,7 +2,10 @@
 document.addEventListener("DOMContentLoaded", () => {
   console.log("Cart Page Initialized!");
 
-  const API_BASE = "https://webbantruyen-backend-latest.onrender.com";
+  const API_BASE =
+    window.location.hostname === "localhost"
+      ? "http://localhost:8080"
+      : "https://webbantruyen-backend-latest.onrender.com";
   const getToken = () => localStorage.getItem("authToken");
 
   const apiRequest = async (path, options = {}) => {
