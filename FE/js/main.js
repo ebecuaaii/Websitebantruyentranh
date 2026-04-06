@@ -2,7 +2,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     console.log("Website Kaleidoscope Initialized!");
 
-    const API_BASE = 'http://localhost:8080';
+    const API_BASE = 'https://webbantruyen-backend-latest.onrender.com';
 
     const getToken = () => localStorage.getItem('authToken');
     const setSession = (token, user) => {
