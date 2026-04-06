@@ -3,9 +3,12 @@ document.addEventListener("DOMContentLoaded", () => {
   console.log("Website Kaleidoscope Initialized!");
 
   const API_BASE =
-    window.location.hostname === "localhost"
+    window.location.hostname === "localhost" ||
+    window.location.hostname === "127.0.0.1"
       ? "http://localhost:8080"
       : "https://webbantruyen-backend-latest.onrender.com";
+
+  console.log(">>> Đang gọi API tại:", API_BASE); // Thêm dòng này để nhìn tận mắt trong Console
 
   const getToken = () => localStorage.getItem("authToken");
   const setSession = (token, user) => {

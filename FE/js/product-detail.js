@@ -1,7 +1,10 @@
 const BASE_URL =
-  (window.location.hostname === "localhost"
+  (window.location.hostname === "localhost" ||
+  window.location.hostname === "127.0.0.1"
     ? "http://localhost:8080"
     : "https://webbantruyen-backend-latest.onrender.com") + "/api";
+
+console.log(">>> Đang gọi API tại:", BASE_URL);
 const getToken = () => localStorage.getItem("authToken");
 const authHeaders = () => ({
   Authorization: `Bearer ${getToken()}`,
