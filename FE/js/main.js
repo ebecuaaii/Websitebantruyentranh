@@ -1,15 +1,14 @@
-// Code JavaScript cho các tương tác trên giao diện
+// 1. ĐƯA LÊN ĐẦU FILE, NGOÀI TẤT CẢ CÁC HÀM
+const API_BASE =
+  window.location.hostname === "localhost" ||
+  window.location.hostname === "127.0.0.1"
+    ? "http://localhost:8080"
+    : "https://webbantruyen-backend-latest.onrender.com";
+
+console.log(">>> Hệ thống đang kết nối tới:", API_BASE);
+
 document.addEventListener("DOMContentLoaded", () => {
   console.log("Website Kaleidoscope Initialized!");
-
-  const API_BASE =
-    window.location.hostname === "localhost" ||
-    window.location.hostname === "127.0.0.1"
-      ? "http://localhost:8080"
-      : "https://webbantruyen-backend-latest.onrender.com";
-
-  console.log(">>> Đang gọi API tại:", API_BASE); // Thêm dòng này để nhìn tận mắt trong Console
-
   const getToken = () => localStorage.getItem("authToken");
   const setSession = (token, user) => {
     localStorage.setItem("authToken", token);

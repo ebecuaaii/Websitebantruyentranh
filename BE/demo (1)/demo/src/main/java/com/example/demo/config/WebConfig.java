@@ -12,7 +12,7 @@ public class WebConfig implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**") // Cho phép tất cả các đường dẫn API (vd: /api/home, /api/products)
                 .allowedOrigins(
-                    "https://websitebantruyentranhv20.vercel.app", // Link Production của ông
+                    "https://websitebantruyentranhv20.vercel.app", // Link Production
                     "http://localhost:5500",                       // Link chạy Live Server ở máy local
                     "http://127.0.0.1:5500"
                 )
